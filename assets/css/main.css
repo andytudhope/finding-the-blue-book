@@ -1,0 +1,384 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
+
+html {
+    scroll-behavior: smooth;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+}
+
+body {
+    margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+    line-height: 1.25;
+	vertical-align: baseline;
+    -webkit-text-size-adjust: none;
+}
+
+span {
+    color: #1D004A;
+    font-weight: 900;
+    text-decoration: underline;
+}
+
+.wrapper {
+    position: relative;
+    font-family: 'Source Code Pro', monospace;
+    max-width: 100%;
+    width: 1280px;
+}
+
+.above-fold {
+    height: 100vh;
+}
+
+.intro-text {
+    display: block;
+    margin: 40px auto;
+    max-width: 810px;
+    width: 100%;
+}
+
+.button a {
+    display: block;
+    width: 15%;
+    margin: 20px auto;
+    padding: 6px 12px;
+    border: 1px solid #1D004A;
+    border-radius: 5px;
+    text-align: center;
+    color: #1D004A;
+    font-weight: 700;
+    text-decoration: none; 
+}
+
+ul {
+    list-style: square;
+}
+
+ul li {
+    padding-bottom: 5px;
+}
+
+ul li a {
+    color: black;
+    cursor: pointer;
+}
+
+img {
+    width: 100%;
+}
+
+.image {
+    margin: 10px 0 40px 0;
+}
+
+.ext-link {
+    color: #1D004A;
+}
+
+/* Typing effect */
+
+@keyframes typing {
+    from { width: 100% }
+    to { width: 0 }
+}
+
+.typing {
+    position: absolute;
+    top: 0;
+    margin: 0;
+    z-index: -1;
+}
+
+.hiders {
+    margin: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.hiders p {
+    position: relative; 
+    clear: both; 
+    margin: 0;
+    float: right; /* makes animation go left-to-right */
+    width:0; /* graceful degradation: if animation doesn't work, these are invisible by default */
+    background: white; /* same as page background */
+    animation: typing 4s steps(80, end);
+    animation-fill-mode: both;  /* load first keyframe on page load, leave on last frame at end */
+}
+  
+.hiders p:nth-child(2) {
+    animation-delay: 4s;
+}
+.hiders p:nth-child(3) {
+    animation-delay: 8s;
+}
+.hiders p:nth-child(4) {
+    animation-delay: 12s;
+}
+.hiders p:nth-child(5) {
+    animation-delay: 16s;
+}
+.hiders p:nth-child(6) {
+    animation-delay: 20s;
+}
+.hiders p:nth-child(7) {
+    animation-delay: 24s;
+}
+.hiders p:nth-child(8) {
+    animation-delay: 28s;
+}
+.hiders p:nth-child(9) {
+    animation-delay: 32s;
+}
+.hiders p:nth-child(10) {
+    animation-delay: 36s;
+}
+.hiders p:nth-child(11) {
+    animation-delay: 40s;
+}
+.hiders p:nth-child(12) {
+    animation-delay: 44s;
+}
+.hiders p:nth-child(13) {
+    animation-delay: 48s;
+}
+.hiders p:nth-child(14) {
+    animation-delay: 52s;
+}
+.hiders p:nth-child(15) {
+    animation-delay: 56s;
+}
+.hiders p:nth-child(16) {
+    animation-delay: 60s;
+}
+.hiders p:nth-child(17) {
+    animation-delay: 64s;
+}
+.hiders p:nth-child(18) {
+    animation-delay: 68s;
+}
+.hiders p:nth-child(19) {
+    animation-delay: 72s;
+}
+.hiders p:nth-child(20) {
+    animation-delay: 76s;
+}
+.hiders p:nth-child(21) {
+    animation-delay: 80s;
+}
+.hiders p:nth-child(22) {
+    animation-delay: 84s;
+}
+.hiders p:nth-child(23) {
+    animation-delay: 88s;
+}
+.hiders p:nth-child(24) {
+    animation-delay: 92s;
+}
+.hiders p:nth-child(25) {
+    animation-delay: 96s;
+}
+.hiders p:nth-child(26) {
+    animation-delay: 100s;
+}
+.hiders p:nth-child(27) {
+    animation-delay: 104s;
+}
+.hiders p:nth-child(28) {
+    animation-delay: 108s;
+}
+.hiders p:nth-child(29) {
+    display: none;
+}
+.hiders p:nth-child(30) {
+    display: none;
+}
+.hiders p:nth-child(31) {
+    display: none;
+}
+.hiders p:nth-child(32) {
+    display: none;
+}
+.hiders p:nth-child(33) {
+    display: none;
+}
+.hiders p:nth-child(34) {
+    display: none;
+}
+.hiders p:nth-child(35) {
+    display: none;
+}
+.hiders p:nth-child(36) {
+    display: none;
+}
+.hiders p:nth-child(37) {
+    display: none;
+}
+.hiders p:nth-child(38) {
+    display: none;
+}
+.hiders p:nth-child(39) {
+    display: none;
+}
+.hiders p:nth-child(40) {
+    display: none;
+}
+.hiders p:nth-child(41) {
+    display: none;
+}
+.hiders p:nth-child(42) {
+    display: none;
+}
+.hiders p:nth-child(43) {
+    display: none;
+}
+.hiders p:nth-child(44) {
+    display: none;
+}
+.hiders p:nth-child(45) {
+    display: none;
+}
+.hiders p:nth-child(46) {
+    display: none;
+}
+.hiders p:nth-child(47) {
+    display: none;
+}
+.hiders p:nth-child(48) {
+    display: none;
+}
+.hiders p:nth-child(49) {
+    display: none;
+}
+.hiders p:nth-child(50) {
+    display: none;
+}
+
+/* Media Queries */
+
+@media screen and (max-width: 810px) {
+    .intro-text p, .hiders p {
+        font-size: 14px;
+        margin: 0 4px;
+    }
+}
+
+@media screen and (max-width: 421px) {
+    .intro-text p, .hiders p {
+        font-size: 12px;
+    }
+
+    .fixed-mobile {
+        margin-top: 170px;
+    }
+
+    .fixed-mobile br {
+        display: none;
+    }
+
+    .stay {
+        display: inline !important;
+    }
+
+    .button a {
+        width: 20%
+    }
+
+    .hiders p:nth-child(29) {
+        display: block;
+        animation-delay: 112s;
+    }
+    .hiders p:nth-child(30) {
+        display: block;
+        animation-delay: 116s;
+    }
+    .hiders p:nth-child(31) {
+        display: block;
+        animation-delay: 120s;
+    }
+    .hiders p:nth-child(32) {
+        display: block;
+        animation-delay: 124s;
+    }
+    .hiders p:nth-child(33) {
+        display: block;
+        animation-delay: 128s;
+    }
+    .hiders p:nth-child(34) {
+        display: block;
+        animation-delay: 132s;
+    }
+    .hiders p:nth-child(35) {
+        display: block;
+        animation-delay: 134s;
+    }
+    .hiders p:nth-child(36) {
+        display: block;
+        animation-delay: 138s;
+    }
+    .hiders p:nth-child(37) {
+        display: block;
+        animation-delay: 142s;
+    }
+    .hiders p:nth-child(38) {
+        display: block;
+        animation-delay: 146s;
+    }
+    .hiders p:nth-child(39) {
+        display: block;
+        animation-delay: 150s;
+    }
+    .hiders p:nth-child(40) {
+        display: block;
+        animation-delay: 154s;
+    }
+    .hiders p:nth-child(41) {
+        display: block;
+        animation-delay: 158s;
+    }
+    .hiders p:nth-child(42) {
+        display: block;
+        animation-delay: 162s;
+    }
+    .hiders p:nth-child(43) {
+        display: block;
+        animation-delay: 166s;
+    }
+    .hiders p:nth-child(44) {
+        display: block;
+        animation-delay: 170s;
+    }
+    .hiders p:nth-child(45) {
+        display: block;
+        animation-delay: 174s;
+    }
+    .hiders p:nth-child(46) {
+        display: block;
+        animation-delay: 178s;
+    }
+    .hiders p:nth-child(47) {
+        display: block;
+        animation-delay: 182s;
+    }
+    .hiders p:nth-child(48) {
+        display: block;
+        animation-delay: 186s;
+    }
+    .hiders p:nth-child(49) {
+        display: block;
+        animation-delay: 190s;
+    }
+    .hiders p:nth-child(50) {
+        display: block;
+        animation-delay: 194s;
+    }
+}
