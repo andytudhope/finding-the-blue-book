@@ -15,7 +15,7 @@ I'm testing the idea for now. The rules are very simple:
 PRs will only be accepted if there is a signed message on the Ethereum mainnet from the same account which owns the Guardian NFT for that chapter attached to them which includes the text:
 
 ```
-I, <github_username>, being of sound mind and pure heart, have intentionally open <link_to_pr>. 
+I, <github_username>, being of sound mind and pure heart, have intentionally opened <link_to_pr>. 
 + whatever other text you feel like adding.
 ```
 
