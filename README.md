@@ -15,7 +15,8 @@ I'm testing the idea for now. The rules are very simple:
 PRs will only be accepted if there is a signed message on the Ethereum mainnet from the same account which owns the Guardian NFT for that chapter attached to them which includes the text:
 
 ```
-I, <github_username>, being of sound mind and pure heart, have intentionally open <link_to_pr>. + whatever other text you feel like adding.
+I, <github_username>, being of sound mind and pure heart, have intentionally open <link_to_pr>. 
++ whatever other text you feel like adding.
 ```
 
 I reserve the right to reject PRs if and only if they contain:
@@ -28,7 +29,7 @@ I reserve the right to reject PRs if and only if they contain:
 
 ## Possible Future Games
 
-[ ] Make my own NFT contract that lets the owner of an NFT update it's metadata URI
-[ ] Use Arweave to store the html files
-[ ] Put that Arweave ref in the Guardian NFTs metadata as the URI
-[ ] Write some javascript to fetch the html and display it on the site
+- [ ] Make my own NFT contract that lets the owner of an NFT update it's metadata URI
+- [ ] Use Arweave to store the html files
+- [ ] Put that Arweave ref in the Guardian NFTs metadata as the URI
+- [ ] Write some javascript to fetch the html and display it on the site
