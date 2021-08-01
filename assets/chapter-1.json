@@ -1,0 +1,28 @@
+{
+    "description": "chapter 1 - the dot", 
+    "attributes": [
+        {
+            "trait_type": "Pages", 
+            "value": "11"
+        },
+        {
+            "trait_type": "Poems", 
+            "value": "11"
+        },
+        {
+            "trait_type": "Prose", 
+            "value": "0"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Grateful"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Loyal"
+        }
+    ],
+    "external_url": "https://arweave.net/SYB3B864z83qpER3rfCBy2BZZc5HH4ETXOOxoouL27Q", 
+    "image": "ar://v4KX471vjlPvZV8DQLAQSemi6jGB18rc7J62M8I58qM", 
+    "name": "chapter one guardian"
+}
