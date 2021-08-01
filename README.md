@@ -31,7 +31,7 @@ I reserve the right to reject PRs if and only if they contain:
 
 - [x] Write an NFT contract that lets the owner of an NFT update it's metadata URI
 - [x] Use Arweave to store the html files
-- [x] Put that Arweave ref in the Guardian NFTs metadata as the URI
+- [x] Put that Arweave ref in the Guardian NFTs metadata
 - [ ] Write some javascript to fetch the html and display it on the site
 
 ## Fork This Repo
@@ -44,4 +44,4 @@ cd finding-the-blue-book/public
 http-server
 ```
 
-If you want to know how to work with these contracts and do more fancy things yourself, please read the instructions in the beautiful [Dynamic Culture Neruapunks repo](https://github.com/Dynamiculture/neurapunks-contract) where I got them from.
+If you want to know how to work with these contracts and do more fancy things yourself, please read the instructions in the beautiful [Dynamic Culture Neurapunks repo](https://github.com/Dynamiculture/neurapunks-contract) where I got them from.
