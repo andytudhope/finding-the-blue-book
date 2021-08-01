@@ -12,14 +12,15 @@ task(TASK_MINT, "Mints a token with token metadata uri")
     ]
 
     if (!metadataUri.startsWith("ar://")) {
-      console.log('token-id must begin with ar://');
+      console.log('metadata-uri must begin with ar://');
       process.exit(0)
     }
     console.log('mintTokenURI:', metadataUri)
 
     let deployer: SignerWithAddress;
+    let NFTOwner: SignerWithAddress;
 
-    [deployer] = await hre.ethers.getSigners();
+    [deployer, NFTOwner] = await hre.ethers.getSigners();
     const address = await deployer.getAddress();
     console.log(`deployer address: ${address}`);
 
@@ -40,9 +41,10 @@ task(TASK_MINT, "Mints a token with token metadata uri")
     console.log(`mintToAddress: ${mintToAddress}`);
 
     const contract: Guardians = new hre.ethers.Contract(contractAddress, abi, deployer) as Guardians;
+    const ownerAddress = await NFTOwner.getAddress();
 
     const receipt: ContractTransaction = await contract.connect(deployer)
-      .safeMint(mintToAddress, metadataUri, { gasLimit: 300000 });
+      .safeMint(ownerAddress, metadataUri, { gasLimit: 300000 });
 
     console.log('minted:', receipt);
     process.exit(0)

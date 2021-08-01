@@ -13,14 +13,15 @@ task(TASK_UPDATETOKENURI, "Updates a token with a new metadata uri")
     ]
 
     if (!metadataUri.startsWith("ar://")) {
-      console.log('token-id must begin with ar://');
+      console.log('metadata-uri must begin with ar://');
       process.exit(0)
     }
     console.log('mintTokenURI:', metadataUri)
 
     let deployer: SignerWithAddress;
+    let NFTOwner: SignerWithAddress;
 
-    [deployer] = await hre.ethers.getSigners();
+    [deployer, NFTOwner] = await hre.ethers.getSigners();
     const address = await deployer.getAddress();
     console.log(`deployer address: ${address}`);
 
