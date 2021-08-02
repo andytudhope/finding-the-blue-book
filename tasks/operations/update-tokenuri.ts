@@ -43,11 +43,7 @@ task(TASK_UPDATETOKENURI, "Updates a token with a new metadata uri")
 
     const contract: Guardians = new hre.ethers.Contract(contractAddress, abi, deployer) as Guardians;
 
-    // TODO: this is weird. Only the mintToAddress should be able to update the tokenURI,
-    // yet currently this works on my local network and I don't know why?
-    // Also, if I substitute mintToAddress instead of deployer, I get an error:
-    // "VoidSigner cannot sign transactions".
-    const receipt: ContractTransaction = await contract.connect(deployer)
+    const receipt: ContractTransaction = await contract.connect(NFTOwner)
       .updateTokenURI(tokenId, metadataUri, { gasLimit: 300000 });
 
     console.log('token URI updated:', receipt);
