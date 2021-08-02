@@ -24,7 +24,8 @@ If you only want to run the site itself, it's very simple:
 
 ```
 git clone https://github.com/andytudhope/finding-the-blue-book.git
-cd finding-the-blue-book/public
+cd finding-the-blue-book
+git checkout gh-pages
 http-server
 ```
 
