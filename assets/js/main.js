@@ -1,13 +1,14 @@
-$.get("https://api.opensea.io/api/v1/assets?order_direction=desc&offset=0&asset_contract_address=0xeB3fC95B74C79C2c3469188A72df2c2399D752AB",function(allIds){
-    let chapter1 = allIds.assets[0].external_link;
-    let chapter2 = allIds.assets[1].external_link;
+$.get("https://api.opensea.io/api/v1/assets?order_direction=asc&offset=0&asset_contract_address=0xeB3fC95B74C79C2c3469188A72df2c2399D752AB",function(allIds){
+    window.chapter1url = allIds.assets[0].external_link;
+    window.chapter2url = allIds.assets[1].external_link;
     
-    $.get(chapter1.toString(),function(chap1){
-        console.log(chap1);
+    $.get(window.chapter1url.toString(),function(chap1){
+        $("#one").html(chap1.toString());
+        console.log("the guardians have ensured you are seeing chapter 1 content from " + window.chapter1url);
     });
 
-    $.get(chapter2.toString(),function(chap2){
-        console.log(chap2);
+    $.get(window.chapter2url.toString(),function(chap2){
+        $("#two").html(chap2.toString());
+        console.log("the guardians have ensured you are seeing chapter 2 content from " + window.chapter2url);
     });
 });
-
