@@ -8,31 +8,15 @@ In truth, this authorial question is perpetually open. So, each chapter has a "G
 
 I mean to create sacred economic space. Technologies like Ethereum bind financial value to every speech act. This means we can create ceremonial transaction types where every economic agent is also an artist by virtue of how they choose to express the value of their gifts. Ownership of a Guardian NFT is one such type, because any transaction you initiate with it - changing this site, selling it, doing absolutely nothing - is itself an artisitic statement.
 
-## Current Game
+## The Never-Ending Story
 
-I'm testing the idea for now. The rules are very simple:
+The story is simple. 
 
-PRs will only be accepted if there is a signed message on the Ethereum mainnet from the same account which owns the Guardian NFT for that chapter attached to them which includes the text:
-
-```
-I, <github_username>, being of sound mind and pure heart, have intentionally opened <link_to_pr>. 
-+ whatever other text you feel like adding.
-```
-
-I reserve the right to reject PRs if and only if they contain:
-
-1. Malicious code
-2. Advertising or tracking software
-3. Pornography
-4. Foul language
-5. Anything commercial
-
-## Possible Future Games
-
-- [x] Write an NFT contract that lets the owner of an NFT update it's metadata URI
-- [x] Use Arweave to store the html files
-- [x] Put that Arweave ref in the Guardian NFTs metadata
-- [ ] Write some javascript to fetch the html and display it on the site
+1. I make Guardian NFTs and give them to people I love.
+2. I adapted [Holly Grimm's](https://github.com/Dynamiculture/neurapunks-contract) wonderful Neurapunks NFT contract to ensure [Guardians can update](https://github.com/andytudhope/finding-the-blue-book/blob/main/contracts/ERC721Tradable.sol#L68) the `tokenURI` which stores the metadata for each NFT.
+3. I set the `external_url` in the metadata of those NFTs to an Arweave page where I have uploaded the html file.
+4. I use the OpenseaAPI and a tiny bit of jQuery to fetch the metadata associated with each NFT, query the `external_url` and replace the html content on each chapter page with whatever comes back. It takes [14 lines of code](https://github.com/andytudhope/finding-the-blue-book/blob/gh-pages/assets/js/main.js) to do this.
+5. Guardians are therefore entirely in control of what gets displayed for their chapter and can change it by using the `updateTokenURI` method in the [Guardians.sol contract](https://etherscan.io/address/0xeB3fC95B74C79C2c3469188A72df2c2399D752AB#writeContract).
 
 ## Fork This Repo
 
