@@ -1,0 +1,32 @@
+{
+    "description": "chapter 2 - loyal fulfillment", 
+    "attributes": [
+        {
+            "trait_type": "Pages", 
+            "value": "11"
+        },
+        {
+            "trait_type": "Poems", 
+            "value": "11"
+        },
+        {
+            "trait_type": "Prose", 
+            "value": "0"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Honesty"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Truth"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Holy"
+        }
+    ],
+    "external_url": "https://arweave.net/ticZY7qXqCScoUyBKBZclhwOZerrj9TtOJtTdAHNnXM", 
+    "image": "ar://fye5mkS1ATSC9DiC6F-IVv1ZxMw6nHMJQFROxD3gC5s", 
+    "name": "chapter two guardian"
+}
