@@ -3,7 +3,7 @@ import { ContractTransaction } from "ethers";
 import { Guardians } from "../../typechain";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { TASK_MINT } from "../task-names";
-// hh mint-token --network rinkeby|mainnet|localhost --metadata-uri ar://fGFUzHRDtsHEFuMDefxRD48xx7hIVep8iWVuHi8h_h4
+// hh mint-token --network mainnet --metadata-uri ar://fGFUzHRDtsHEFuMDefxRD48xx7hIVep8iWVuHi8h_h4
 task(TASK_MINT, "Mints a token with token metadata uri")
   .addParam("metadataUri", "The token URI", null, types.string)
   .setAction(async ({ metadataUri }, hre) => {
@@ -18,9 +18,8 @@ task(TASK_MINT, "Mints a token with token metadata uri")
     console.log('mintTokenURI:', metadataUri)
 
     let deployer: SignerWithAddress;
-    let NFTOwner: SignerWithAddress;
 
-    [deployer, NFTOwner] = await hre.ethers.getSigners();
+    [deployer] = await hre.ethers.getSigners();
     const address = await deployer.getAddress();
     console.log(`deployer address: ${address}`);
 
@@ -41,10 +40,9 @@ task(TASK_MINT, "Mints a token with token metadata uri")
     console.log(`mintToAddress: ${mintToAddress}`);
 
     const contract: Guardians = new hre.ethers.Contract(contractAddress, abi, deployer) as Guardians;
-    const ownerAddress = await NFTOwner.getAddress();
 
     const receipt: ContractTransaction = await contract.connect(deployer)
-      .safeMint(ownerAddress, metadataUri, { gasLimit: 300000 });
+      .safeMint(mintToAddress, metadataUri, { gasLimit: 300000 });
 
     console.log('minted:', receipt);
     process.exit(0)

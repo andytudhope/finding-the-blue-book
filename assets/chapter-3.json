@@ -1,0 +1,32 @@
+{
+    "description": "chapter 3 - glory in life", 
+    "attributes": [
+        {
+            "trait_type": "Pages", 
+            "value": "12"
+        },
+        {
+            "trait_type": "Poems", 
+            "value": "7"
+        },
+        {
+            "trait_type": "Prose", 
+            "value": "5"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Living"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Ongoing"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Eternal"
+        }
+    ],
+    "external_url": "https://arweave.net/AoVho7todjuRGn8mVsJwSpwKvsjkXuO57crl6gaxgVQ", 
+    "image": "ar://UaS9QuClGxoGRAFRxJW8zMZ4YlKpme1Ig3gztSrIkbo", 
+    "name": "chapter three guardian"
+}
