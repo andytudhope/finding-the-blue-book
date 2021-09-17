@@ -16,17 +16,17 @@ $.get("https://api.opensea.io/api/v1/assets?order_direction=asc&offset=0&asset_c
     });
 
     $.get(window.chapter3url.toString(),function(chap3){
-        $("#two").html(chap3.toString());
+        $("#three").html(chap3.toString());
         console.log("the guardians have ensured you are seeing chapter 3 content from " + window.chapter3url);
     });
 
     $.get(window.chapter4url.toString(),function(chap4){
-        $("#two").html(chap4.toString());
+        $("#four").html(chap4.toString());
         console.log("the guardians have ensured you are seeing chapter 4 content from " + window.chapter4url);
     });
 
     $.get(window.chapter5url.toString(),function(chap5){
-        $("#two").html(chap5.toString());
+        $("#five").html(chap5.toString());
         console.log("the guardians have ensured you are seeing chapter 5 content from " + window.chapter5url);
     });
 });
