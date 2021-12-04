@@ -83,6 +83,13 @@ img {
     color: #1D004A;
 }
 
+.video-frame {
+    display: block;
+    width: 80%;
+    height: 400px;
+    margin: 20px auto;
+}
+
 .video-frame-half {
     display: block;
     width: 47%;
