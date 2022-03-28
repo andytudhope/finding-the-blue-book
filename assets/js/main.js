@@ -62,5 +62,4 @@ $.get("https://eth-mainnet.alchemyapi.io/v2/EPx6hNqYZwrb0hhmr9nsmavrbM8b6wch/get
             console.log("the guardians have ensured you are seeing chapter 8 content from " + chapter8url);
         });
     })
-    
 });
