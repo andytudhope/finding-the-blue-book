@@ -5,6 +5,7 @@ import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-etherscan";
 import "hardhat-typechain";
 import "solidity-coverage";
+import "hardhat-gas-reporter";
 
 import "./tasks/accounts";
 import "./tasks/deployment/deploy";
@@ -32,17 +33,17 @@ const config: HardhatUserConfig = {
         } }],
     },
     networks: {
-        hardhat: {},
+        hardhat: {
+            initialBaseFeePerGas: 0, //https://github.com/sc-forks/solidity-coverage/issues/652
+        },
         localhost: {},
         mainnet: {
             url: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`,
             accounts: [MAINNET_PRIVATE_KEY],
-            gasPrice: 50000000000, // 50 gwei,
         },
         rinkeby: {
             url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`,
             accounts: [RINKEBY_PRIVATE_KEY],
-            gasPrice: 50000000000, // 50 gwei,
         },
         coverage: {
             url: "http://127.0.0.1:8555", // Coverage launches its own ganache-cli client
@@ -52,6 +53,11 @@ const config: HardhatUserConfig = {
         // Your API key for Etherscan
         // Obtain one at https://etherscan.io/
         apiKey: ETHERSCAN_API_KEY,
+    },
+    gasReporter: {
+        enabled: true,
+        currency: "USD",
+        gasPrice: 21,
     },
 };
 
