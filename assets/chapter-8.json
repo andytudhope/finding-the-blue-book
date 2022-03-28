@@ -1,0 +1,28 @@
+{
+    "description": "chapter 8 - passed understanding", 
+    "attributes": [
+        {
+            "trait_type": "Pages", 
+            "value": "12"
+        },
+        {
+            "trait_type": "Poems", 
+            "value": "12"
+        },
+        {
+            "trait_type": "Prose", 
+            "value": "0"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Peace"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Heart"
+        }
+    ],
+    "external_url": "https://arweave.net/", 
+    "image": "ar://e0FoeKAVadVL66ywO13emcP8os8LlazrATJBcKM3C5Q", 
+    "name": "chapter eight guardian"
+}
