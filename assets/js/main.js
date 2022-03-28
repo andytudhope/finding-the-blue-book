@@ -1,44 +1,65 @@
-$.get("https://api.opensea.io/api/v1/assets?order_direction=asc&offset=0&asset_contract_address=0xeB3fC95B74C79C2c3469188A72df2c2399D752AB",function(allIds){
-    window.chapter1url = allIds.assets[0].external_link;
-    window.chapter2url = allIds.assets[1].external_link;
-    window.chapter3url = allIds.assets[2].external_link;
-    window.chapter4url = allIds.assets[3].external_link;
-    window.chapter5url = allIds.assets[4].external_link;
-    window.chapter6url = allIds.assets[5].external_link;
-    window.chapter7url = allIds.assets[6].external_link;
-    
-    $.get(window.chapter1url.toString(),function(chap1){
-        $("#one").html(chap1.toString());
-        console.log("the guardians have ensured you are seeing chapter 1 content from " + window.chapter1url);
-    });
+$.get("https://eth-mainnet.alchemyapi.io/v2/EPx6hNqYZwrb0hhmr9nsmavrbM8b6wch/getNFTsForCollection?contractAddress=0xeB3fC95B74C79C2c3469188A72df2c2399D752AB&startToken=0&withMetadata=true",function(result){
+    $.get(result.nfts[0].tokenUri.gateway, function(res1) {
+        chapter1url = res1.external_url;
+        $.get(chapter1url.toString(),function(chap1){
+            $("#one").html(chap1.toString());
+            console.log("the guardians have ensured you are seeing chapter 1 content from " + chapter1url);
+        });
+    })
 
-    $.get(window.chapter2url.toString(),function(chap2){
-        $("#two").html(chap2.toString());
-        console.log("the guardians have ensured you are seeing chapter 2 content from " + window.chapter2url);
-    });
+    $.get(result.nfts[1].tokenUri.gateway, function(res2) {
+        chapter2url = res2.external_url;
+        $.get(chapter2url.toString(),function(chap2){
+            $("#two").html(chap2.toString());
+            console.log("the guardians have ensured you are seeing chapter 2 content from " + chapter2url);
+        });
+    })
 
-    $.get(window.chapter3url.toString(),function(chap3){
-        $("#three").html(chap3.toString());
-        console.log("the guardians have ensured you are seeing chapter 3 content from " + window.chapter3url);
-    });
+    $.get(result.nfts[2].tokenUri.gateway, function(res3) {
+        chapter3url = res3.external_url;
+        $.get(chapter3url.toString(),function(chap3){
+            $("#three").html(chap3.toString());
+            console.log("the guardians have ensured you are seeing chapter 3 content from " + chapter3url);
+        });
+    })
 
-    $.get(window.chapter4url.toString(),function(chap4){
-        $("#four").html(chap4.toString());
-        console.log("the guardians have ensured you are seeing chapter 4 content from " + window.chapter4url);
-    });
+    $.get(result.nfts[3].tokenUri.gateway, function(res4) {
+        chapter4url = res4.external_url;
+        $.get(chapter4url.toString(),function(chap4){
+            $("#four").html(chap4.toString());
+            console.log("the guardians have ensured you are seeing chapter 4 content from " + chapter4url);
+        });
+    })
 
-    $.get(window.chapter5url.toString(),function(chap5){
-        $("#five").html(chap5.toString());
-        console.log("the guardians have ensured you are seeing chapter 5 content from " + window.chapter5url);
-    });
+    $.get(result.nfts[4].tokenUri.gateway, function(res5) {
+        chapter5url = res5.external_url;
+        $.get(chapter5url.toString(),function(chap5){
+            $("#five").html(chap5.toString());
+            console.log("the guardians have ensured you are seeing chapter 5 content from " + chapter5url);
+        });
+    })
 
-    $.get(window.chapter6url.toString(),function(chap6){
-        $("#six").html(chap6.toString());
-        console.log("the guardians have ensured you are seeing chapter 6 content from " + window.chapter6url);
-    });
+    $.get(result.nfts[5].tokenUri.gateway, function(res6) {
+        chapter6url = res6.external_url;
+        $.get(chapter6url.toString(),function(chap6){
+            $("#six").html(chap6.toString());
+            console.log("the guardians have ensured you are seeing chapter 6 content from " + chapter6url);
+        });
+    })
 
-    $.get(window.chapter7url.toString(),function(chap7){
-        $("#six").html(chap7.toString());
-        console.log("the guardians have ensured you are seeing chapter 7 content from " + window.chapter7url);
-    });
+    $.get(result.nfts[6].tokenUri.gateway, function(res7) {
+        chapter7url = res7.external_url;
+        $.get(chapter7url.toString(),function(chap7){
+            $("#seven").html(chap7.toString());
+            console.log("the guardians have ensured you are seeing chapter 7 content from " + chapter7url);
+        });
+    })
+
+    $.get(result.nfts[8].tokenUri.gateway, function(res8) {
+        chapter8url = res8.external_url;
+        $.get(chapter8url.toString(),function(chap8){
+            $("#eight").html(chap8.toString());
+            console.log("the guardians have ensured you are seeing chapter 8 content from " + chapter8url);
+        });
+    })
 });
