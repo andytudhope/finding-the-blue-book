@@ -98,6 +98,14 @@ img {
     height: 280px;
 }
 
+.video-frame-match {
+    display: block;
+    width: 47%;
+    margin: 53px 20px 20px 0;
+    float: left;
+    height: 214px;
+}
+
 /* Typing effect */
 
 @keyframes typing {
