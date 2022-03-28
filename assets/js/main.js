@@ -6,6 +6,7 @@ $.get("https://api.opensea.io/api/v1/assets?order_direction=asc&offset=0&asset_c
     window.chapter5url = allIds.assets[4].external_link;
     window.chapter6url = allIds.assets[5].external_link;
     window.chapter7url = allIds.assets[6].external_link;
+    window.chapter8url = allIds.assets[8].external_link;
     
     $.get(window.chapter1url.toString(),function(chap1){
         $("#one").html(chap1.toString());
@@ -38,7 +39,12 @@ $.get("https://api.opensea.io/api/v1/assets?order_direction=asc&offset=0&asset_c
     });
 
     $.get(window.chapter7url.toString(),function(chap7){
-        $("#six").html(chap7.toString());
+        $("#seven").html(chap7.toString());
         console.log("the guardians have ensured you are seeing chapter 7 content from " + window.chapter7url);
+    });
+
+    $.get(window.chapter8url.toString(),function(chap8){
+        $("#eight").html(chap8.toString());
+        console.log("the guardians have ensured you are seeing chapter 8 content from " + window.chapter8url);
     });
 });
