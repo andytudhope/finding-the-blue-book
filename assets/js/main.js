@@ -1,5 +1,12 @@
 $.get("https://eth-mainnet.alchemyapi.io/v2/EPx6hNqYZwrb0hhmr9nsmavrbM8b6wch/getNFTsForCollection?contractAddress=0xeB3fC95B74C79C2c3469188A72df2c2399D752AB&startToken=0&withMetadata=true",function(result){
-    $.get(result.nfts[0].tokenUri.gateway, function(res1) {
+    
+    let nfts = result.nfts;
+
+    nfts.sort((a, b) => {
+        return a.id.tokenId - b.id.tokenId;
+    })
+
+    $.get(nfts[0].tokenUri.gateway, function(res1) {
         chapter1url = res1.external_url;
         $.get(chapter1url.toString(),function(chap1){
             $("#one").html(chap1.toString());
@@ -7,7 +14,7 @@ $.get("https://eth-mainnet.alchemyapi.io/v2/EPx6hNqYZwrb0hhmr9nsmavrbM8b6wch/get
         });
     })
 
-    $.get(result.nfts[1].tokenUri.gateway, function(res2) {
+    $.get(nfts[1].tokenUri.gateway, function(res2) {
         chapter2url = res2.external_url;
         $.get(chapter2url.toString(),function(chap2){
             $("#two").html(chap2.toString());
@@ -15,7 +22,7 @@ $.get("https://eth-mainnet.alchemyapi.io/v2/EPx6hNqYZwrb0hhmr9nsmavrbM8b6wch/get
         });
     })
 
-    $.get(result.nfts[2].tokenUri.gateway, function(res3) {
+    $.get(nfts[2].tokenUri.gateway, function(res3) {
         chapter3url = res3.external_url;
         $.get(chapter3url.toString(),function(chap3){
             $("#three").html(chap3.toString());
@@ -23,7 +30,7 @@ $.get("https://eth-mainnet.alchemyapi.io/v2/EPx6hNqYZwrb0hhmr9nsmavrbM8b6wch/get
         });
     })
 
-    $.get(result.nfts[3].tokenUri.gateway, function(res4) {
+    $.get(nfts[3].tokenUri.gateway, function(res4) {
         chapter4url = res4.external_url;
         $.get(chapter4url.toString(),function(chap4){
             $("#four").html(chap4.toString());
@@ -31,7 +38,7 @@ $.get("https://eth-mainnet.alchemyapi.io/v2/EPx6hNqYZwrb0hhmr9nsmavrbM8b6wch/get
         });
     })
 
-    $.get(result.nfts[4].tokenUri.gateway, function(res5) {
+    $.get(nfts[4].tokenUri.gateway, function(res5) {
         chapter5url = res5.external_url;
         $.get(chapter5url.toString(),function(chap5){
             $("#five").html(chap5.toString());
@@ -39,7 +46,7 @@ $.get("https://eth-mainnet.alchemyapi.io/v2/EPx6hNqYZwrb0hhmr9nsmavrbM8b6wch/get
         });
     })
 
-    $.get(result.nfts[5].tokenUri.gateway, function(res6) {
+    $.get(nfts[5].tokenUri.gateway, function(res6) {
         chapter6url = res6.external_url;
         $.get(chapter6url.toString(),function(chap6){
             $("#six").html(chap6.toString());
@@ -47,7 +54,7 @@ $.get("https://eth-mainnet.alchemyapi.io/v2/EPx6hNqYZwrb0hhmr9nsmavrbM8b6wch/get
         });
     })
 
-    $.get(result.nfts[6].tokenUri.gateway, function(res7) {
+    $.get(nfts[6].tokenUri.gateway, function(res7) {
         chapter7url = res7.external_url;
         $.get(chapter7url.toString(),function(chap7){
             $("#seven").html(chap7.toString());
@@ -55,7 +62,7 @@ $.get("https://eth-mainnet.alchemyapi.io/v2/EPx6hNqYZwrb0hhmr9nsmavrbM8b6wch/get
         });
     })
 
-    $.get(result.nfts[8].tokenUri.gateway, function(res8) {
+    $.get(nfts[8].tokenUri.gateway, function(res8) {
         chapter8url = res8.external_url;
         $.get(chapter8url.toString(),function(chap8){
             $("#eight").html(chap8.toString());
