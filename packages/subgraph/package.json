@@ -7,7 +7,7 @@
     "prepare-yaml": "ts-node src/generate-subgraph-yaml.ts",
     "codegen": "graph codegen ./subgraph.mainnet.yaml",
     "build": "graph build ./subgraph.mainnet.yaml",
-    "deploy": "yarn build && graph auth --studio d1ff0f8d8ab737e8dfcf17adf044e334 && graph deploy --studio guardians ./subgraph.mainnet.yaml"
+    "deploy": "yarn build && graph auth --studio <auth_token> && graph deploy --studio guardians ./subgraph.mainnet.yaml"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.29.0",
