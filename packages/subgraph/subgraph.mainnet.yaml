@@ -1,0 +1,25 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: GUARD
+    network: mainnet
+    source:
+      address: "0xeB3fC95B74C79C2c3469188A72df2c2399D752AB"
+      abi: GUARD
+      startBlock: 12944628
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - GuardianNFT
+        - Account
+      abis:
+        - name: GUARD
+          file: ../../packages/hardhat-ts/deployments/mainnet/GUARD.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleSafeMint
+      file: ./src/guardianNFT-mapping.ts

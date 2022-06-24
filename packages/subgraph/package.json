@@ -1,0 +1,23 @@
+{
+  "name": "subgraph",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf ./generated ./build subgraph.*.yaml",
+    "prepare-yaml": "ts-node src/generate-subgraph-yaml.ts",
+    "codegen": "graph codegen ./subgraph.mainnet.yaml",
+    "build": "graph build ./subgraph.mainnet.yaml",
+    "deploy": "yarn build && graph auth --studio d1ff0f8d8ab737e8dfcf17adf044e334 && graph deploy --studio guardians ./subgraph.mainnet.yaml"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.29.0",
+    "@graphprotocol/graph-ts": "0.26.0",
+    "mustache": "^4.2.0",
+    "typescript": "^4.6.4"
+  },
+  "devDependencies": {
+    "@types/mustache": "^4.1.2",
+    "ts-node": "^10.6.0",
+    "rimraf": "^3.0.2"
+  }
+}

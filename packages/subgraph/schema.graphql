@@ -1,0 +1,21 @@
+type GuardianNFT @entity {
+  "The NFT's ERC721 token id"
+  id: ID!
+
+  "The steward of the NFT"
+  guardian: Account!
+
+  "The uri of the token, stored always in Arweave for both types"
+  uri: String!
+
+  "The time that the NFT was created"
+  createdAtTimestamp: BigInt!
+}
+
+type Account @entity {
+  "An Account is any address that holds any amount of NFTs, the id used is the blockchain address."
+  id: ID!
+
+  "The NFT guarded by this account"
+  guardianNft: [GuardianNFT!]! @derivedFrom(field: "guardian")
+}

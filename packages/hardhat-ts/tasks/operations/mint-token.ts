@@ -3,7 +3,7 @@ import { ContractTransaction } from "ethers";
 import { Guardians } from "../../typechain";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { TASK_MINT } from "../task-names";
-// hh mint-token --network mainnet --metadata-uri ar://5TeDFn9GwtZD2UiXasR-xrs4pXJ1VMxdweLUTI8Mkx0
+// npx hardhat mint-token --network mainnet --metadata-uri ar://kBszeMr0FWdBqrqX2u6Nky28e7IDhk-O1GoyjczL0_k
 task(TASK_MINT, "Mints a token with token metadata uri")
   .addParam("metadataUri", "The token URI", null, types.string)
   .setAction(async ({ metadataUri }, hre) => {
