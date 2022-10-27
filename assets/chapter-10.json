@@ -1,0 +1,33 @@
+
+{
+    "description": "chapter 10 - garden well", 
+    "attributes": [
+        {
+            "trait_type": "Pages", 
+            "value": "22"
+        },
+        {
+            "trait_type": "Poems", 
+            "value": "22"
+        },
+        {
+            "trait_type": "Prose", 
+            "value": "0"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Lovevolution"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Nurtural Nature"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Compost Covenant"
+        }
+    ],
+    "external_url": "https://arweave.net/-QToZNYFZ8UumdYbbVw7MV9f3OK7xDM6TPo1zKGYnHg", 
+    "image": "ar://o4eM-BzGXq3ooSSFuaGM1GgCvHjhPXU9cvHinvwT4vI", 
+    "name": "chapter ten guardian"
+}
