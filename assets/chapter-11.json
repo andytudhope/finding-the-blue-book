@@ -1,0 +1,33 @@
+
+{
+    "description": "chapter 11 - radiant abode", 
+    "attributes": [
+        {
+            "trait_type": "Pages", 
+            "value": "11"
+        },
+        {
+            "trait_type": "Poems", 
+            "value": "11"
+        },
+        {
+            "trait_type": "Prose", 
+            "value": "0"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Emptiness"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Acceptance"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Radiance"
+        }
+    ],
+    "external_url": "https://arweave.net/vzRQ0iWFt4S9LWw2Z-TZtiXQ_IIw4abUjRfXV3UGT78", 
+    "image": "ar://HI0-Zr6YDD-1V-VXlquY1Khmh6YOpFWvjIcG1kMdC6A", 
+    "name": "chapter eleven guardian"
+}
