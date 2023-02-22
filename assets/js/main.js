@@ -90,7 +90,7 @@ $.get("https://eth-mainnet.alchemyapi.io/v2/EPx6hNqYZwrb0hhmr9nsmavrbM8b6wch/get
         chapter11url = res11.external_url;
         $.get(chapter11url.toString(),function(chap11){
             $("#eleven").html(chap11.toString());
-            console.log("the guardians have ensured you are seeing chapter 10 content from " + chapter11url);
+            console.log("the guardians have ensured you are seeing chapter 11 content from " + chapter11url);
         });
     })
 
@@ -98,7 +98,7 @@ $.get("https://eth-mainnet.alchemyapi.io/v2/EPx6hNqYZwrb0hhmr9nsmavrbM8b6wch/get
         chapter12url = res12.external_url;
         $.get(chapter12url.toString(),function(chap12){
             $("#twelve").html(chap12.toString());
-            console.log("the guardians have ensured you are seeing chapter 10 content from " + chapter12url);
+            console.log("the guardians have ensured you are seeing chapter 12 content from " + chapter12url);
         });
     })
 });
