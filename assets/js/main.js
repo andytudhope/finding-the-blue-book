@@ -101,4 +101,12 @@ $.get("https://eth-mainnet.alchemyapi.io/v2/EPx6hNqYZwrb0hhmr9nsmavrbM8b6wch/get
             console.log("the guardians have ensured you are seeing chapter 12 content from " + chapter12url);
         });
     })
+
+    $.get(nfts[13].tokenUri.gateway, function(res13) {
+        chapter13url = res13.external_url;
+        $.get(chapter13url.toString(),function(chap13){
+            $("#thirteen").html(chap13.toString());
+            console.log("the guardians have ensured you are seeing chapter 13 content from " + chapter13url);
+        });
+    })
 });
