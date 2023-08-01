@@ -1,0 +1,33 @@
+
+{
+    "description": "chapter 14 - sufficient", 
+    "attributes": [
+        {
+            "trait_type": "Pages", 
+            "value": "16"
+        },
+        {
+            "trait_type": "Poems", 
+            "value": "16"
+        },
+        {
+            "trait_type": "Prose", 
+            "value": "0"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Serene"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Cosmic"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Current"
+        }
+    ],
+    "external_url": "https://arweave.net/Y-ptYOrFGtxamjhC6I3DDUwprhhubbTEf4If5esFrng", 
+    "image": "ar://owLV2ChB4uil25Z4kcSPFC58iVDP7vIMyTZfFpBH5EU", 
+    "name": "chapter fourteen guardian"
+}
