@@ -291,7 +291,7 @@ img {
 @media screen and (max-width: 810px) {
     .intro-text p, .hiders p {
         font-size: 14px;
-        margin: 0 4px;
+        margin: 4px;
     }
 }
 
