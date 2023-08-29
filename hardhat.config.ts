@@ -41,8 +41,8 @@ const config: HardhatUserConfig = {
             url: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`,
             accounts: [MAINNET_PRIVATE_KEY],
         },
-        rinkeby: {
-            url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`,
+        goerli: {
+            url: `https://goerli.infura.io/v3/${INFURA_API_KEY}`,
             accounts: [RINKEBY_PRIVATE_KEY],
         },
         coverage: {

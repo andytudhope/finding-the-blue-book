@@ -27,8 +27,8 @@ task(TASK_MINT, "Mints a token with token metadata uri")
     console.log(`network: ${network.name}`);
 
     var contractAddress = "";
-    if (network.name === "rinkeby") {
-      contractAddress = process.env.RINKEBY_CONTRACT_ADDRESS || '';
+    if (network.name === "goerli") {
+      contractAddress = process.env.GOERLI_CONTRACT_ADDRESS || '';
     } else if (network.name === "homestead") {
       contractAddress = process.env.MAINNET_CONTRACT_ADDRESS || '';
     } else if (network.name === "unknown") { //localhost network
