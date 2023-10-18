@@ -1,0 +1,33 @@
+
+{
+    "description": "chapter 16 - innocence", 
+    "attributes": [
+        {
+            "trait_type": "Pages", 
+            "value": "12"
+        },
+        {
+            "trait_type": "Poems", 
+            "value": "12"
+        },
+        {
+            "trait_type": "Prose", 
+            "value": "0"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Uncontrived"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Transparent"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Maternal"
+        }
+    ],
+    "external_url": "https://arweave.net/SiZ9MWn50o4E-VBeT7ESxgCalk0V5GK2F-wHO1zC6k8", 
+    "image": "ar://hQkwtPftVRv4UbtXq7exXHRrAIw_fecY0sTx_1VvlBE", 
+    "name": "chapter sixteen guardian"
+}
