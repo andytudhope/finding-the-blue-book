@@ -1,13 +1,14 @@
+
 {
-    "description": "chapter 2 - loyal fulfillment", 
+    "description": "chapter 17 - healing time", 
     "attributes": [
         {
             "trait_type": "Pages", 
-            "value": "11"
+            "value": "20"
         },
         {
             "trait_type": "Poems", 
-            "value": "11"
+            "value": "20"
         },
         {
             "trait_type": "Prose", 
@@ -15,18 +16,18 @@
         },
         {
             "trait_type": "Attribute", 
-            "value": "Honesty"
+            "value": "Healing"
         },
         {
             "trait_type": "Attribute", 
-            "value": "Truth"
+            "value": "Time"
         },
         {
             "trait_type": "Attribute", 
-            "value": "Holy"
+            "value": "Dasein"
         }
     ],
-    "external_url": "https://arweave.net/Ho7LYpLmCPd1TDDi8h0CFboFZhLCvymIcLLBB1oVE8I", 
-    "image": "ar://fye5mkS1ATSC9DiC6F-IVv1ZxMw6nHMJQFROxD3gC5s", 
-    "name": "chapter two guardian"
+    "external_url": "https://arweave.net/b8jeBR0r7MFPPrJcxzHeYR4XhLWiF_WW-8N47gKI0jg", 
+    "image": "ar://5jMMPjNkb0MWhvlR72g2oIKwFZqePFDpKJiE3LSlKwM", 
+    "name": "chapter seventeen guardian"
 }

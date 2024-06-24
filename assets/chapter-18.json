@@ -1,13 +1,14 @@
+
 {
-    "description": "chapter 2 - loyal fulfillment", 
+    "description": "chapter 18 - innocence", 
     "attributes": [
         {
             "trait_type": "Pages", 
-            "value": "11"
+            "value": "19"
         },
         {
             "trait_type": "Poems", 
-            "value": "11"
+            "value": "19"
         },
         {
             "trait_type": "Prose", 
@@ -15,18 +16,18 @@
         },
         {
             "trait_type": "Attribute", 
-            "value": "Honesty"
+            "value": "Innocent"
         },
         {
             "trait_type": "Attribute", 
-            "value": "Truth"
+            "value": "Nourishing"
         },
         {
             "trait_type": "Attribute", 
-            "value": "Holy"
+            "value": "Balanced"
         }
     ],
-    "external_url": "https://arweave.net/Ho7LYpLmCPd1TDDi8h0CFboFZhLCvymIcLLBB1oVE8I", 
-    "image": "ar://fye5mkS1ATSC9DiC6F-IVv1ZxMw6nHMJQFROxD3gC5s", 
-    "name": "chapter two guardian"
+    "external_url": "https://arweave.net/ykBgY4eKX-uKIhAHSIOa6Y7EF0Vrz46c_hBYKTJ9NPc", 
+    "image": "ar://bM989dLGCE22aKNIqj3aoQR2WolMUcLSkC4D__5kbeE", 
+    "name": "chapter eighteen guardian"
 }
