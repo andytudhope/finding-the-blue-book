@@ -1,0 +1,33 @@
+
+{
+    "description": "chapter 19 - the yellow book", 
+    "attributes": [
+        {
+            "trait_type": "Pages", 
+            "value": "24"
+        },
+        {
+            "trait_type": "Poems", 
+            "value": "24"
+        },
+        {
+            "trait_type": "Prose", 
+            "value": "0"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Joy"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Heaven"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Earth"
+        }
+    ],
+    "external_url": "https://arweave.net/F6WXYWnDEmVU-tHuiB8FP2ZzgpuevcvVum8F-WlefnE", 
+    "image": "ar://KSpIuwN0o-sZP5kAHss42nu-MYvUgUF3hsboYZAnCyc", 
+    "name": "chapter nineteen guardian"
+}
