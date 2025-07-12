@@ -1,6 +1,6 @@
 const container = document.getElementById("rainbow-vis");
-const width = container.clientWidth;
-const height = container.clientHeight;
+const width = 400;
+const height = 400;
 
 const scene = new THREE.Scene();
 

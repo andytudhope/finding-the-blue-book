@@ -1,6 +1,6 @@
 const container = document.getElementById("light-vis");
-const width = container.clientWidth;
-const height = container.clientHeight;
+const width = 400;
+const height = 400;
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);

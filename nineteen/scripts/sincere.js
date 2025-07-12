@@ -1,6 +1,6 @@
 const container = document.getElementById("sincere-vis");
-const width = container.clientWidth;
-const height = container.clientHeight;
+const width = 400;
+const height = 400;
 
 const scene = new THREE.Scene();
 const camera = new THREE.OrthographicCamera(
