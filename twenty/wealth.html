@@ -1,0 +1,346 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - Real Wealth</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/wealth.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>Real Wealth</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May we discover our debt<br/>
+                            as a call to come together<br/>
+                            and find the same loops,<br/>
+                            the same connecting cycles,<br/>
+                            that signify life itself.<br/>
+                            <br/>
+                            May such connections<br/>
+                            help us clear what is owed<br/>
+                            to the future and make good<br/>
+                            our obligations to those<br/>
+                            who walk behind us.<br/>
+                            <br/>
+                            May it be a quiet,<br/>
+                            sweeping jubilee,<br/>
+                            an ongoing celebration<br/>
+                            of life's structure<br/>
+                            and all the many ways<br/>
+                            in which we depend on others<br/>
+                            to let us know we are one.<br/>
+                        </div>
+
+                        <div class="vis" id="wealth-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="./breath.html">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="./particular.html">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+            const width = 400;
+            const height = 400;
+            const rows = 8;
+            const cols = 12;
+            const margin = 30;
+
+            const svg = d3.select("#wealth-vis")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+            const gEdges = svg.append("g");
+            const gNodes = svg.append("g");
+
+            let nodeId = 0;
+            let edgeId = 0;
+
+            // --- nodes ----------------------------------------------------
+
+            const nodes = [];
+            const cellW = (width - 2 * margin) / (cols - 1);
+            const cellH = (height - 2 * margin) / (rows - 1);
+
+            for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                const x = margin + c * cellW + (Math.random() - 0.5) * 8;
+                const y = margin + r * cellH + (Math.random() - 0.5) * 8;
+                nodes.push({
+                id: nodeId++,
+                row: r,
+                col: c,
+                x,
+                y,
+                baseX: x,
+                baseY: y,
+                targetX: x,
+                targetY: y,
+                cycleDegree: 0
+                });
+            }
+            }
+
+            let edges = [];
+
+            // --- selections -----------------------------------------------
+
+            let edgeSel = gEdges.selectAll("line.edge");
+            const nodeSel = gNodes.selectAll("circle.node")
+            .data(nodes, d => d.id)
+            .enter()
+            .append("circle")
+            .attr("class", "node")
+            .attr("r", 3)
+            .attr("fill", "#444")
+            .style("opacity", 0.4);
+
+            // --- helpers --------------------------------------------------
+
+            function randNode(filterFn) {
+            const filtered = filterFn ? nodes.filter(filterFn) : nodes;
+            return filtered.length ? filtered[Math.floor(Math.random() * filtered.length)] : null;
+            }
+
+            function addOpenEdge(now) {
+            const a = randNode();
+            if (!a) return;
+            const b = randNode(n => n !== a && Math.abs(n.row - a.row) >= 1);
+            if (!b) return;
+
+            edges.push({
+                id: edgeId++,
+                source: a,
+                target: b,
+                status: "open",
+                createdAt: now,
+                closedAt: null
+            });
+            }
+
+            function addCycle(now) {
+            const cycleSize = 3 + Math.floor(Math.random() * 3); // 3–5
+            const nodesInCycle = [];
+            for (let i = 0; i < cycleSize; i++) {
+                const n = randNode();
+                if (!n) continue;
+                if (!nodesInCycle.includes(n)) nodesInCycle.push(n);
+            }
+            if (nodesInCycle.length < 3) return;
+
+            for (let i = 0; i < nodesInCycle.length; i++) {
+                const a = nodesInCycle[i];
+                const b = nodesInCycle[(i + 1) % nodesInCycle.length];
+
+                const existing = edges.find(
+                e =>
+                    ((e.source === a && e.target === b) ||
+                    (e.source === b && e.target === a))
+                );
+
+                if (existing) {
+                existing.status = "cycle";
+                existing.closedAt = now;
+                } else {
+                edges.push({
+                    id: edgeId++,
+                    source: a,
+                    target: b,
+                    status: "cycle",
+                    createdAt: now,
+                    closedAt: now
+                });
+                }
+
+                a.cycleDegree++;
+                b.cycleDegree++;
+            }
+            }
+
+            function neighbors(node) {
+            return edges
+                .filter(e => e.status !== "dead" && (e.source === node || e.target === node))
+                .map(e => (e.source === node ? e.target : e.source));
+            }
+
+            // --- phase timing ---------------------------------------------
+
+            const phase1End = 8000;
+            const phase2End = 18000;
+            const phase3End = 28000;
+            const phase4End = 40000;
+
+            // --- animation ------------------------------------------------
+
+            let lastTime = 0;
+
+            const timer = d3.timer(elapsed => {
+            const now = elapsed;
+            const dt = (now - lastTime) / 1000;
+            lastTime = now;
+
+            let phase;
+            if (now < phase1End) phase = 1;
+            else if (now < phase2End) phase = 2;
+            else if (now < phase3End) phase = 3;
+            else if (now < phase4End) phase = 4;
+            else phase = 5;
+
+            // create edges / cycles
+            if (phase === 1) {
+                if (Math.random() < 0.05) addOpenEdge(now);
+            } else if (phase === 2) {
+                if (Math.random() < 0.03) addOpenEdge(now);
+                if (Math.random() < 0.04) addCycle(now);
+            } else if (phase === 3) {
+                if (Math.random() < 0.02) addCycle(now);
+            }
+
+            // gentle drift toward neighbors (coming together)
+            nodes.forEach(n => {
+                const ns = neighbors(n);
+                if (!ns.length) return;
+                let avgX = 0,
+                avgY = 0;
+                ns.forEach(m => {
+                avgX += m.x;
+                avgY += m.y;
+                });
+                avgX /= ns.length;
+                avgY /= ns.length;
+                n.x += (avgX - n.x) * 0.1 * dt;
+                n.y += (avgY - n.y) * 0.1 * dt;
+            });
+
+            // future rows straighten in phase 3
+            if (phase >= 3) {
+                const futureRowStart = rows - 3;
+                nodes.forEach(n => {
+                if (n.row >= futureRowStart) {
+                    const targetY = margin + n.row * cellH;
+                    n.y += (targetY - n.y) * 0.3 * dt;
+                }
+                });
+            }
+
+            // global sweep factor for final fade
+            let sweep = 0;
+            if (phase >= 4) {
+                sweep = Math.min(1, (now - phase3End) / (phase4End - phase3End));
+            }
+
+            // update edges selection
+            edgeSel = gEdges.selectAll("line.edge")
+                .data(edges.filter(e => e.status !== "dead"), d => d.id);
+
+            edgeSel.exit().remove();
+
+            const edgeEnter = edgeSel.enter()
+                .append("line")
+                .attr("class", "edge")
+                .attr("stroke-linecap", "round");
+
+            edgeSel = edgeEnter.merge(edgeSel);
+
+            edgeSel.each(function (e) {
+                const sx = e.source.x;
+                const sy = e.source.y;
+                const tx = e.target.x;
+                const ty = e.target.y;
+
+                let stroke = "#888";
+                let width = 0.6;
+                let opacity = 0.25;
+                let dash = "4,4";
+
+                if (e.status === "cycle") {
+                const age = e.closedAt != null ? (now - e.closedAt) / 1000 : 0;
+                const pulse = Math.max(0, 1 - Math.min(1, age / 3));
+                stroke = "#1f4d7a";
+                width = 1.0 + 0.4 * pulse;       // softer, thinner
+                opacity = 0.4 + 0.3 * pulse;
+                dash = null;
+
+                if (phase >= 3) {
+                    const midRow = (e.source.row + e.target.row) / 2;
+                    if (e.source.row < midRow && e.target.row >= midRow) {
+                    const fadeAge = Math.max(0, (now - e.closedAt) / 4000);
+                    opacity *= Math.max(0, 1 - fadeAge);
+                    }
+                }
+                }
+
+                // global fade in phase 4: all connections fade away
+                if (phase >= 4) {
+                const globalFade = 1 - sweep;
+                opacity *= globalFade;
+                width *= globalFade;
+                if (opacity < 0.02) {
+                    e.status = "dead";
+                }
+                }
+
+                d3.select(this)
+                .attr("x1", sx)
+                .attr("y1", sy)
+                .attr("x2", tx)
+                .attr("y2", ty)
+                .attr("stroke", stroke)
+                .attr("stroke-width", width)
+                .style("stroke-dasharray", dash)
+                .style("opacity", opacity);
+            });
+
+            // update nodes
+            nodeSel
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .attr("r", d => 2.2 + Math.min(3, d.cycleDegree) * 0.5)
+                .style("opacity", d => {
+                let base = 0.3 + Math.min(1, d.cycleDegree / 4) * 0.5;
+                if (phase >= 4) {
+                    const globalFade = 1 - sweep;
+                    base *= globalFade;
+                }
+                return base;
+                });
+
+            if (phase === 5 && now > phase4End + 5000) {
+                timer.stop();
+            }
+            });
+        </script>
+        
+    </body>
+</html>

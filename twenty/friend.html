@@ -1,0 +1,300 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - Little Friend</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/friend.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>Little Friend</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May you know the beauty<br/>
+                            of small gratitudes,<br/>
+                            as often as you remember.<br/>
+                            <br/>
+                            May they come to you<br/>
+                            like little friends,<br/>
+                            reaching for your finger<br/>
+                            and pulling you back<br/>
+                            into timelessness.<br/>
+                            <br/>
+                            May you hum them deep<br/>
+                            into your own heart<br/>
+                            and, by this,<br/>
+                            come to each moment<br/>
+                            wide-eyed with wonder<br/>
+                            at the singular face of love<br/>
+                            gazing right at you.<br/>
+                        </div>
+
+                        <div class="vis" id="friend-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="./joy.html">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="./timeless.html">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+            const width = 400;
+            const height = 400;
+
+            const svg = d3.select("#friend-vis")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+            // background
+            svg.append("rect")
+            .attr("width", width)
+            .attr("height", height)
+            .attr("fill", "#faf0cf");
+
+            const centerX = width / 2;
+
+            // --- Flower of Life geometry ------------------------------------
+
+            function flowerOfLife(cx, cy, r, rings) {
+            const pts = [{ x: cx, y: cy }];
+            const dirs = [
+                { x:  1, y:  0 },
+                { x:  0.5, y:  Math.sqrt(3) / 2 },
+                { x: -0.5, y:  Math.sqrt(3) / 2 },
+                { x: -1, y:  0 },
+                { x: -0.5, y: -Math.sqrt(3) / 2 },
+                { x:  0.5, y: -Math.sqrt(3) / 2 }
+            ];
+
+            for (let ring = 1; ring <= rings; ring++) {
+                let px = cx + dirs[4].x * r * ring;
+                let py = cy + dirs[4].y * r * ring;
+                for (let side = 0; side < 6; side++) {
+                const dx = dirs[side].x * r;
+                const dy = dirs[side].y * r;
+                for (let step = 0; step < ring; step++) {
+                    pts.push({ x: px, y: py });
+                    px += dx;
+                    py += dy;
+                }
+                }
+            }
+            return pts;
+            }
+
+            const ringRadius = 18;
+            const flowerCenterY = height * 0.75;
+            const points = flowerOfLife(centerX, flowerCenterY, ringRadius, 3);
+
+            // group into rows by y
+            const yTol = 1.0;
+            let rows = [];
+            points.forEach((p, i) => {
+            let row = rows.find(r => Math.abs(r.y - p.y) < yTol);
+            if (!row) {
+                row = { y: p.y, indices: [] };
+                rows.push(row);
+            }
+            row.indices.push(i);
+            });
+
+            // sort rows bottom → top
+            rows.sort((a, b) => b.y - a.y);
+
+            // sort indices in each row by x and build spawn orders
+            rows.forEach((row, rowIdx) => {
+            row.indices.sort((i1, i2) => points[i1].x - points[i2].x);
+
+            const idxs = row.indices;
+            const n = idxs.length;
+
+            // find index of point closest to centerX
+            let centerIndex = idxs.reduce((best, i) =>
+                Math.abs(points[i].x - centerX) < Math.abs(points[best].x - centerX) ? i : best
+            , idxs[0]);
+
+            const order = [];
+
+            if (rowIdx === 0) {
+                // bottom row: first circle directly under main dot (center), then both sides
+                order.push(centerIndex);
+                const others = idxs.filter(i => i !== centerIndex);
+                let l = 0, r = others.length - 1;
+                while (l <= r) {
+                if (l === r) {
+                    order.push(others[l]);
+                } else {
+                    order.push(others[l]);
+                    order.push(others[r]);
+                }
+                l++; r--;
+                }
+            } else {
+                // higher rows: fill from sides inward, center last
+                let l = 0, r = n - 1;
+                while (l <= r) {
+                if (l === r) {
+                    order.push(idxs[l]);
+                } else {
+                    order.push(idxs[l]);
+                    order.push(idxs[r]);
+                }
+                l++; r--;
+                }
+            }
+
+            row.spawnOrder = order;
+            row.total = order.length;
+            row.spawned = 0;
+            row.settled = 0;
+            row.aboveY = row.y - (ringRadius + 8);
+            });
+
+            // global spawn sequence (rows bottom → top)
+            const spawnSequence = [];
+            rows.forEach((row, rowIdx) => {
+            row.spawnOrder.forEach(pointIndex => {
+                spawnSequence.push({ row: rowIdx, pointIndex });
+            });
+            });
+
+            // --- main dot ----------------------------------------------------
+
+            const firstRowAbove = rows[0].aboveY;
+            const blackStartY = firstRowAbove + 12;
+            const colorInterp = d3.interpolateRgb("#000000", "#ff69b4");
+
+            const blackDot = svg.append("circle")
+            .attr("cx", centerX)
+            .attr("cy", blackStartY)
+            .attr("r", 7)
+            .attr("fill", "#000000");
+
+            // --- falling circles ---------------------------------------------
+
+            const goldGroup = svg.append("g");
+            const spawnInterval = 900;
+            const fallDuration = 2600;
+
+            let activeCircles = [];
+            let spawnPtr = 0;
+            let lastSpawn = 0;
+
+            const totalCircles = spawnSequence.length;
+
+            const timer = d3.timer(elapsed => {
+            // spawn next circle if it's time
+            if (spawnPtr < spawnSequence.length && elapsed - lastSpawn > spawnInterval) {
+                const spec = spawnSequence[spawnPtr];
+                const p = points[spec.pointIndex];
+                activeCircles.push({
+                ...spec,
+                start: elapsed,
+                settled: false,
+                cx: p.x,
+                cyTarget: p.y
+                });
+                rows[spec.row].spawned += 1;
+                spawnPtr++;
+                lastSpawn = elapsed;
+            }
+
+            // update circles
+            const sel = goldGroup.selectAll("circle.outline")
+                .data(activeCircles, d => d.start);
+
+            sel.enter()
+                .append("circle")
+                .attr("class", "outline")
+                .attr("r", ringRadius)
+                .attr("fill", "none")
+                .attr("stroke", "#d4af37")
+                .attr("stroke-width", 1.3)
+                .style("opacity", 0)
+                .merge(sel)
+                .each(function(d) {
+                const tLocal = Math.min(1, (elapsed - d.start) / fallDuration);
+                const ease = tLocal < 0.5
+                    ? 2 * tLocal * tLocal
+                    : 1 - Math.pow(-2 * tLocal + 2, 2) / 2;
+
+                const startY = -40;
+                const y = startY + (d.cyTarget - startY) * ease;
+
+                if (!d.settled && tLocal >= 1) {
+                    d.settled = true;
+                    rows[d.row].settled += 1;
+                }
+
+                d3.select(this)
+                    .attr("cx", d.cx)
+                    .attr("cy", y)
+                    .style("opacity", tLocal <= 0.25 ? tLocal / 0.25 : 1);
+                });
+
+            sel.exit().remove();
+
+            // compute black dot vertical position
+            let currentRow = -1;
+            rows.forEach((row, idx) => {
+                if (row.spawned > 0) currentRow = idx;
+            });
+
+            let targetY = blackStartY;
+
+            if (currentRow >= 0) {
+                const prevAbove = currentRow === 0
+                ? blackStartY
+                : rows[currentRow - 1].aboveY;
+                const row = rows[currentRow];
+                const progress = row.total === 0 ? 0 : row.settled / row.total;
+                targetY = prevAbove + (row.aboveY - prevAbove) * progress;
+            }
+
+            blackDot.attr("cy", targetY);
+
+            // color shift based on overall settled fraction
+            const settledTotal = rows.reduce((acc, r) => acc + r.settled, 0);
+            const ratio = totalCircles === 0 ? 0 : settledTotal / totalCircles;
+            blackDot.attr("fill", colorInterp(ratio));
+
+            // stop timer once everything has settled
+            if (settledTotal === totalCircles) {
+                timer.stop();
+            }
+            });
+        </script>
+        
+    </body>
+</html>

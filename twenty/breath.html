@@ -1,0 +1,182 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - With Every Breath</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>With Every Breath</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May I, at last, come<br/>
+                            to every breath as worship,<br/>
+                            Your name endlessly<br/>
+                            gathered in and given out.<br/>
+                            <br/>
+                            May I know this<br/>
+                            as the most open-hearted<br/>
+                            way to live through life,<br/>
+                            within Your love, without a hold.<br/>
+                            <br/>
+                            May I be this<br/>
+                            eternal transformation, <br/>
+                            this soul realisation,<br/>
+                            echoing as One.<br/>
+                        </div>
+
+                        <div class="vis" id="breath-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="./return.html">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="./wealth.html">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+            const width = 400;
+            const height = 400;
+            const numParticles = 700;
+            const dotRadius = 2.2;
+
+            const svg = d3.select("#breath-vis")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+            const center = { x: width / 2, y: height / 2 };
+            const maxRadius = Math.min(width, height) / 2 - 12;
+
+            const colors = ["#001f3f", "#FFD700", "#ffffff", "#111111"];
+
+            const particles = d3.range(numParticles).map((id) => {
+            const baseRadius = d3.randomUniform(10, maxRadius)();
+            const angle = Math.random() * Math.PI * 2;
+            return {
+                id,
+                baseRadius,
+                angle,
+                phase: Math.random() * Math.PI * 2,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                x: center.x,
+                y: center.y
+            };
+            });
+
+            const dots = svg.selectAll("circle.particle")
+            .data(particles, d => d.id)
+            .enter()
+            .append("circle")
+            .attr("class", "particle")
+            .attr("r", dotRadius)
+            .attr("fill", d => d.color)
+            .style("opacity", 0.9);
+
+            let lastElapsed = 0;
+
+            // breathing + gathering pattern
+            const breathFreq = 0.2;            // slower breathing
+            const breathsExpanded = 4;         // expanded breaths
+            const breathsGather = 2;           // gather + release breaths
+
+            const breathsDuration = breathsExpanded / breathFreq;
+            const gatherDuration = breathsGather / breathFreq;
+            const pulsePeriod = breathsDuration + gatherDuration;
+
+            const timer = d3.timer((elapsed) => {
+            const t = elapsed / 1000;
+            const dt = (elapsed - lastElapsed) / 1000;
+            lastElapsed = elapsed;
+
+            const globalBreath = Math.sin(t * 2 * Math.PI * breathFreq);
+
+            const cycleTime = t % pulsePeriod;
+            let unifyStrength = 0;
+
+            if (cycleTime > breathsDuration) {
+                const u = (cycleTime - breathsDuration) / gatherDuration;
+                const wave = 0.5 - 0.5 * Math.cos(2 * Math.PI * u);
+                unifyStrength = Math.pow(wave, 1.3);
+            }
+
+            particles.forEach(p => {
+                const baseAngularSpeed = 0.4;
+                const extraAngular = 0.3 * Math.sin(p.phase + t * 0.2);
+                p.angle += (baseAngularSpeed + extraAngular) * dt;
+
+                const breathAmp = 10 + p.baseRadius * 0.12;
+                const localBreath = Math.sin(t * 2 * Math.PI * breathFreq + p.phase);
+
+                let radius = p.baseRadius
+                + breathAmp * 0.5 * globalBreath
+                + breathAmp * 0.3 * localBreath;
+
+                radius += (Math.random() - 0.5) * 3 * dt * 30;
+                radius = Math.max(6, Math.min(maxRadius, radius));
+
+                const inwardFactor = 1 - 0.85 * unifyStrength;
+                radius *= inwardFactor;
+
+                p.radius = radius;
+                p.x = center.x + radius * Math.cos(p.angle);
+                p.y = center.y + radius * Math.sin(p.angle);
+            });
+
+            const heartScale = 1 + 0.35 * globalBreath;
+            const heartOpacity = 0.15 + 0.25 * (globalBreath + 1) / 2;
+
+            const heart = svg.selectAll("circle.heart").data([0]);
+            heart.enter()
+                .append("circle")
+                .attr("class", "heart")
+                .attr("cx", center.x)
+                .attr("cy", center.y)
+                .attr("fill", "#FFD700")
+                .merge(heart)
+                .attr("r", 18 * heartScale)
+                .style("opacity", heartOpacity);
+
+            dots
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .style("opacity", d => {
+                const base = 0.4 + 0.5 * ((Math.sin(t * 2 * Math.PI * breathFreq + d.phase) + 1) / 2);
+                const pulse = 0.3 * unifyStrength;
+                return Math.max(0, Math.min(1, base + pulse));
+                });
+            });
+        </script>
+        
+    </body>
+</html>

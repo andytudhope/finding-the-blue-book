@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - Time Less</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/timeless.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>Time Less</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May you touch timeless being,<br/>
+                            here, in your life as it is,<br/>
+                            beyond the conditional<br/>
+                            all this is cloaked in.<br/>
+                            <br/>
+                            May it be simple<br/>
+                            and direct<br/>
+                            and nothing like the words<br/>
+                            of this prayer,<br/>
+                            <br/>
+                            Except for the love<br/>
+                            that moves me to make it<br/>
+                            for you, which is and was<br/>
+                            and will be forever.<br/>
+                        </div>
+
+                        <div class="vis" id="timeless-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="./friend.html">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="./blessed.html">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+            const width = 400;
+            const height = 400;
+
+            const svg = d3.select("#timeless-vis")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+            const center = { x: width / 2, y: height / 2 };
+            const topY = height * 0.05;
+            const cloakBottomY = height * 0.95;
+
+            // still golden dot in the centre
+            svg.append("circle")
+            .attr("cx", center.x)
+            .attr("cy", center.y)
+            .attr("r", 8)
+            .attr("fill", "none")
+            .attr("stroke", "#f4d27a")
+            .attr("stroke-width", 2);
+
+            svg.append("circle")
+            .attr("cx", center.x)
+            .attr("cy", center.y)
+            .attr("r", 4)
+            .attr("fill", "#f9e39a");
+
+            // cloak particles
+            const numParticles = 340;
+
+            const particles = d3.range(numParticles).map((i) => {
+            const side = i < numParticles / 2 ? "left" : "right";
+            return {
+                side,
+                offset: Math.random(),                 // starting phase 0..1
+                speed: 0.03 + Math.random() * 0.04,    // much slower: fraction per second
+                phase: Math.random() * Math.PI * 2,
+                sway: 10 + Math.random() * 10,
+                size: 1.3 + Math.random() * 1.3,
+                yJitter: 3 + Math.random() * 5
+            };
+            });
+
+            const cloak = svg.append("g").attr("class", "cloak");
+
+            const particleSel = cloak.selectAll("circle.p")
+            .data(particles)
+            .enter()
+            .append("circle")
+            .attr("class", "p")
+            .attr("r", d => d.size)
+            .attr("fill", "#a9b3d5")
+            .style("opacity", 0.8);
+
+            // base half-width of cloak at vertical fraction s (0 top, 1 bottom)
+            function baseHalfWidth(s) {
+            return s * 150; // spreads out with depth
+            }
+
+            d3.timer((elapsedMs) => {
+            const t = elapsedMs / 1000; // seconds
+
+            // global sway of cloak shape
+            const globalSwayLeft  = 10 * Math.sin(t * 0.4);
+            const globalSwayRight = 10 * Math.sin(t * 0.4 + Math.PI * 0.6);
+
+            particleSel.each(function (d) {
+                // vertical fraction 0..1
+                const s = (d.offset + d.speed * t) % 1;
+
+                // y position with slight per-particle jitter so it's not on rows
+                const baseY = topY + s * (cloakBottomY - topY);
+                const y = baseY + Math.sin(t * 0.7 + d.phase) * d.yJitter;
+
+                // half width, but the cloak outline itself sways like a river
+                let halfW = baseHalfWidth(s);
+                const wiggle = 15 * Math.sin(t * 0.7 + s * 3 + d.phase * 0.5);
+                halfW += wiggle;
+
+                const sideSway = d.side === "left" ? globalSwayLeft : globalSwayRight;
+                const dir = d.side === "left" ? -1 : 1;
+
+                const x = center.x + dir * halfW + sideSway;
+
+                // opacity: denser around middle, softer at top/bottom
+                const alphaShape = Math.sin(s * Math.PI);
+                const alpha = 0.15 + 0.6 * alphaShape;
+
+                d3.select(this)
+                .attr("cx", x)
+                .attr("cy", y)
+                .style("opacity", alpha);
+            });
+            });
+        </script>
+        
+    </body>
+</html>

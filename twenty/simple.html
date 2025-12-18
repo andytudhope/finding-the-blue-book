@@ -1,0 +1,192 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - LBJ</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/simple.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>LBJ</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May you find this<br/>
+                            simple,<br/>
+                            like being barefoot<br/>
+                            in the garden<br/>
+                            after returning home,<br/>
+                            a common finch<br/>
+                            <br/>
+                            known and unnamed <br/>
+                            all your life<br/>
+                            <br/>
+                            calling from <br/>
+                            the old olive tree.<br/>
+                        </div>
+
+                        <div class="vis" id="simple-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="./plain-words.html">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="./tidings.html">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+            const width = 400;
+            const height = 400;
+
+            const svg = d3.select("#simple-vis")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+            // ---- emitter (brown dot in bottom-right quadrant) ----
+
+            const emitter = {
+            x: width * 0.72,
+            y: height * 0.72,
+            r: 6
+            };
+
+            const emitterCircle = svg.append("circle")
+            .attr("cx", emitter.x)
+            .attr("cy", emitter.y)
+            .attr("r", emitter.r)
+            .attr("fill", "#8b5a33");
+
+            // ---- golden-angle spiral target positions (discrete) ----
+
+            const maxParticles = 260;
+            const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // ≈ 2.399963
+            const spiralCenter = { x: width * 0.45, y: height * 0.38 };
+            const scale = 5.2; // controls spacing
+
+            const targets = d3.range(maxParticles).map(i => {
+            const r = scale * Math.sqrt(i + 4); // spread out gradually
+            const theta = i * goldenAngle;
+            return {
+                x: spiralCenter.x + r * Math.cos(theta),
+                y: spiralCenter.y + r * Math.sin(theta)
+            };
+            });
+
+            // ---- particles data ----
+
+            const particles = [];
+            let nextIndex = 0;
+
+            const particleGroup = svg.append("g");
+            let particleSel = particleGroup.selectAll("circle.particle");
+
+            const spawnInterval = 420;   // ms between births
+            const travelDuration = 3500; // ms to reach final position
+            let lastSpawn = 0;
+
+            // ---- animation loop ----
+
+            let lastTime = 0;
+
+            d3.timer(elapsed => {
+            const t = elapsed;
+            const dt = t - lastTime;
+            lastTime = t;
+
+            // emitter subtle vibration
+            const wobble = 1 + 0.12 * Math.sin(t / 600);
+            const offsetX = 0.8 * Math.sin(t / 530);
+            const offsetY = 0.8 * Math.cos(t / 710);
+
+            emitterCircle
+                .attr("cx", emitter.x + offsetX)
+                .attr("cy", emitter.y + offsetY)
+                .attr("r", emitter.r * wobble);
+
+            // spawn new particle
+            if (nextIndex < maxParticles && t - lastSpawn > spawnInterval) {
+                particles.push({
+                index: nextIndex,
+                born: t
+                });
+                nextIndex++;
+                lastSpawn = t;
+            }
+
+            // update selection
+            particleSel = particleGroup
+                .selectAll("circle.particle")
+                .data(particles, d => d.index);
+
+            particleSel.exit().remove();
+
+            const entered = particleSel.enter()
+                .append("circle")
+                .attr("class", "particle")
+                .attr("r", 2.4)
+                .attr("fill", "#f3d87a")
+                .style("opacity", 0);
+
+            particleSel = entered.merge(particleSel);
+
+            // move particles from emitter to spiral target
+            particleSel
+                .each(function (d) {
+                const age = t - d.born;
+                const target = targets[d.index];
+
+                const u = Math.max(0, Math.min(1, age / travelDuration)); // 0→1
+                const eased = u < 0.5
+                    ? 2 * u * u
+                    : 1 - Math.pow(-2 * u + 2, 2) / 2; // smooth ease
+
+                const startX = emitter.x + offsetX;
+                const startY = emitter.y + offsetY;
+
+                const x = startX + (target.x - startX) * eased;
+                const y = startY + (target.y - startY) * eased;
+
+                // fade in, then settle
+                const opacity = u < 0.3 ? u / 0.3 : 1;
+                const radius = 1.8 + 0.8 * (1 - Math.exp(-3 * u));
+
+                d3.select(this)
+                    .attr("cx", x)
+                    .attr("cy", y)
+                    .attr("r", radius)
+                    .style("opacity", opacity);
+                });
+            });
+        </script>
+        
+    </body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - Resounding Joy</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/joy.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>Resounding Joy</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May the music of life,<br/>
+                            sounding in every cell,<br/>
+                            set you free.<br/>
+                            <br/>
+                            May it lift you,<br/>
+                            literally,<br/>
+                            this rising wave.<br/>
+                            <br/>
+                            Quieter than silence,<br/>
+                            the whole bell ringing<br/>
+                            from big bang to right now,<br/>
+                            <br/>
+                            though totally still<br/>
+                            inside, a celebration so vast<br/>
+                            it leaves the surface<br/>
+                            <br/>
+                            undisturbed,<br/>
+                            the barrier between <br/>
+                            two seas set,<br/>
+                            <br/>
+                            yet vibrating one <br/>
+                            living note, in every cell.<br/>
+                            O joyful sound!<br/>
+                        </div>
+
+                        <div class="vis" id="joy-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="./devote.html">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="./friend.html">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+            const width = 400;
+            const height = 400;
+            const resolution = 3;
+
+            const canvas = d3.select("#joy-vis")
+            .append("canvas")
+            .attr("width", width)
+            .attr("height", height)
+            .node();
+
+            const ctx = canvas.getContext("2d");
+
+            // Petri dish / cell
+            const cx = width / 2;
+            const cy = height / 2;
+            const cellRadius = 170;
+            const bellRadius = 70; // "peace bell" core (quiet inside)
+
+            // Wave sources (initially a bit random, later harmonised)
+            const numSources = 6;
+            const sources = d3.range(numSources).map(i => {
+            const angle = (i / numSources) * Math.PI * 2;
+            const r = cellRadius * 0.6;
+            const sx = cx + r * Math.cos(angle + Math.random() * 0.6);
+            const sy = cy + r * Math.sin(angle + Math.random() * 0.6);
+
+            const baseFreq = 0.0005 + Math.random() * 0.0007;
+            const harmonicFreq = 0.0005 * (i + 1); // simple harmonic series
+
+            const baseLambda = 20 + Math.random() * 20;
+            const harmonicLambda = 25 + i * 5;
+
+            return {
+                x: sx,
+                y: sy,
+                baseFreq,
+                harmonicFreq,
+                baseLambda,
+                harmonicLambda,
+                phase: Math.random() * Math.PI * 2
+            };
+            });
+
+            let time = 0;
+
+            // Harmony timing
+            const harmonizeStart = 8000;  // ms
+            const harmonizeEnd   = 20000; // ms
+
+            function animate(ts) {
+            ctx.clearRect(0, 0, width, height);
+
+            // Background
+            ctx.fillStyle = "#faf0cf";
+            ctx.fillRect(0, 0, width, height);
+
+            // Harmony factor 0→1
+            const h = Math.max(
+                0,
+                Math.min(
+                1,
+                (ts - harmonizeStart) / (harmonizeEnd - harmonizeStart)
+                )
+            );
+
+            const rows = Math.floor(height / resolution);
+            const cols = Math.floor(width / resolution);
+
+            // Precompute some global "gravity" modulation
+            const gPhase = ts * 0.00015;
+            const gWave = Math.sin(gPhase);
+
+            for (let i = 0; i < rows; i++) {
+                const y = i * resolution;
+                for (let j = 0; j < cols; j++) {
+                const x = j * resolution;
+
+                const dxCell = x - cx;
+                const dyCell = y - cy;
+                const distCell = Math.sqrt(dxCell * dxCell + dyCell * dyCell);
+
+                // Only draw inside the cell
+                if (distCell > cellRadius) continue;
+
+                // Field amplitude from all sources
+                let amp = 0;
+                let weightSum = 0;
+
+                for (const s of sources) {
+                    const dx = x - s.x;
+                    const dy = y - s.y;
+                    const d = Math.sqrt(dx * dx + dy * dy) + 0.001;
+
+                    // Blend wavelength & frequency from random → harmonic
+                    const freq = (1 - h) * s.baseFreq + h * s.harmonicFreq;
+                    const lambda = (1 - h) * s.baseLambda + h * s.harmonicLambda;
+
+                    const k = (2 * Math.PI) / lambda;
+                    const phase = k * d - ts * freq * 1000 + s.phase;
+
+                    const w = 1 / (1 + d * 0.03);
+                    amp += Math.sin(phase) * w;
+                    weightSum += w;
+                }
+
+                if (weightSum === 0) continue;
+                amp /= weightSum;
+
+                // Inside the bell, things are quiet (sound "silent" within)
+                if (distCell < bellRadius) {
+                    amp *= 0.2;
+                }
+
+                // Global "gravity" bias: waves subtly pulled downward
+                const gravity = (dyCell / cellRadius) * 0.6;
+                const val = amp + gravity * gWave * 0.4;
+
+                const valNorm = Math.max(0, Math.min(1, (val + 1) / 2));
+                const angle = valNorm * Math.PI * 2;
+
+                // Hue blend
+                const chaoticHue = 290 + 40 * Math.sin(angle);         // purplish/pink
+                const harmonicHue = 185 + 35 * Math.sin(angle * 2);    // teal/gold mix
+                const hue = (1 - h) * chaoticHue + h * harmonicHue;
+
+                const sat = 40 + 40 * Math.pow(valNorm, 1.3);
+                let light = 8 + 40 * valNorm;
+
+                // Strong amplitudes create bright "notes"
+                const strong = Math.abs(val) > 0.65;
+                if (strong) {
+                    light = 60 + 30 * (Math.abs(val) - 0.65) / 0.35;
+                }
+
+                // --- make underlying grid the same as background ---
+                if (strong) {
+                    // visible "notes"
+                    ctx.fillStyle = `hsl(${hue}, ${sat}%, ${light}%)`;
+                    ctx.globalAlpha = 0.9;
+                } else {
+                    // grid cell: same colour as background so grid disappears
+                    ctx.fillStyle = "#faf0cf";
+                    ctx.globalAlpha = 1.0;
+                }
+
+                ctx.beginPath();
+                ctx.arc(x, y, strong ? resolution * 0.8 : resolution * 0.4, 0, 2 * Math.PI);
+                ctx.fill();
+                }
+            }
+
+            ctx.globalAlpha = 1;
+
+            time += 0.03;
+            requestAnimationFrame(animate);
+            }
+
+            requestAnimationFrame(animate);
+        </script>
+        
+    </body>
+</html>

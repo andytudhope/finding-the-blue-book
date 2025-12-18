@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - A Particular Place</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/particular.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>A Particular Place</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May you know home<br/>
+                            wherever you go,<br/>
+                            however you stay,<br/>
+                            at ease with the constant<br/>
+                            change that comes from being <br/>
+                            a guest in this world.<br/>
+                            <br/>
+                            And may you know this <br/>
+                            double joy of a specific place,<br/>
+                            like the million folded<br/>
+                            deep green hills, each cliff<br/>
+                            and <i>krans</i> and hidden curve<br/>
+                            its own praise singer celebrating<br/>
+                            all the many ancestors<br/>
+                            who walk before this moment,<br/>
+                            this particular homecoming,<br/>
+                            now, where we always are. <br/>
+                        </div>
+
+                        <div class="vis" id="particular-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="./wealth.html">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="./taste.html">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+// Requires: <div id="wealth-vis"></div> and d3 v7
+
+const width = 400;
+const height = 400;
+
+const svg = d3.select("#particular-vis")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+// --- HILL LAYERS (original palette & structure) -----------------
+
+const hillColors = [
+  "#003d0b",
+  "#085015",
+  "#0c611c",
+  "#137a29",
+  "#1a9235"
+];
+
+const layers = hillColors.map((color, i) => ({
+  color,
+  baseY: height * (0.45 + i * 0.08),
+  amp: 18 + i * 5,
+  f1: 0.8 + i * 0.2,
+  f2: 1.6 + i * 0.15,
+  phase1: Math.random() * Math.PI * 2,
+  phase2: Math.random() * Math.PI * 2,
+  speed: 0.4 + i * 0.08
+}));
+
+const nSamples = 80;
+
+function hillY(layer, t, xNorm, breath) {
+  return (
+    layer.baseY +
+    layer.amp *
+      Math.sin(layer.f1 * xNorm * Math.PI * 2 + layer.phase1 + t * layer.speed) +
+    layer.amp *
+      0.7 *
+      Math.sin(layer.f2 * xNorm * Math.PI * 2 - layer.phase2 - t * layer.speed * 0.6) +
+    breath
+  );
+}
+
+function hillPath(layer, t, breath) {
+  const points = [];
+  for (let i = 0; i <= nSamples; i++) {
+    const xNorm = i / nSamples;
+    const xx = xNorm * width;
+    const yy = hillY(layer, t, xNorm, breath);
+    points.push([xx, yy]);
+  }
+
+  const topLine = d3.line().curve(d3.curveNatural)(points);
+  // Close shape to bottom without curving (avoids right-edge spike)
+  return `${topLine}L${width},${height}L0,${height}Z`;
+}
+
+// --- MOON (behind hills) ----------------------------------------
+
+const moonGroup = svg.append("g");
+const moon = moonGroup
+  .append("circle")
+  .attr("r", 14)
+  .attr("fill", "#f7f7ff")
+  .style("opacity", 0); // will fade in as it rises
+
+// --- HILLS (in front of moon) ----------------------------------
+
+const hillGroup = svg.append("g");
+
+const layerSel = hillGroup
+  .selectAll("path.hill")
+  .data(layers)
+  .enter()
+  .append("path")
+  .attr("class", "hill")
+  .attr("fill", d => d.color)
+  .style("opacity", 0.95);
+
+// --- ANIMATION --------------------------------------------------
+
+let last = 0;
+const moonDuration = 30000; // ms
+
+d3.timer(elapsed => {
+  const t = elapsed / 2000;
+  const dt = (elapsed - last) / 1000;
+  last = elapsed;
+
+  const breath = 8 * Math.sin(t * 0.2);
+
+  // update hills
+  layerSel.attr("d", d => hillPath(d, t, breath));
+
+  // front-most hill (closest to viewer) for horizon at moon x
+  const frontLayer = layers[layers.length - 1];
+
+  // moon rising
+  const moonProgress = Math.min(1, elapsed / moonDuration);
+  const moonX = width * 0.78;
+  const moonYStart = height * 0.85;
+  const moonYEnd = height * 0.25;
+  const moonY = moonYStart + (moonYEnd - moonYStart) * moonProgress;
+
+  const moonPulse = 1 + 0.12 * Math.sin(t * 1.2);
+  const moonR = 14 * moonPulse;
+
+  // horizon height at moon x (front hill)
+  const xNorm = moonX / width;
+  const horizonY = hillY(frontLayer, t, xNorm, breath);
+
+  // only visible when above the land
+  const visible = moonY < horizonY;
+  const baseOpacity = 0.7 + 0.2 * Math.sin(t * 0.7);
+  const moonOpacity = visible ? baseOpacity : 0;
+
+  moon
+    .attr("cx", moonX)
+    .attr("cy", moonY)
+    .attr("r", moonR)
+    .style("opacity", moonOpacity);
+});
+
+        </script>
+        
+    </body>
+</html>

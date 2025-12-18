@@ -1,0 +1,272 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - Subtraction</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/return.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>Subtraction</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May you take away<br/>
+                            only the barriers you yourself<br/>
+                            have built to buffer what <br/>
+                            once seemed fragile<br/>
+                            from the glory of this moment,<br/>
+                            this unrepeatable, never before seen<br/>
+                            moment, which dissolves<br/>
+                            into eternity, this particular instance<br/>
+                            of forever.<br/>
+                            <br/>
+                            May the careful art of subtraction <br/>
+                            leave you unburdened,<br/>
+                            so that your way is one of joy,<br/>
+                            so that you may arrive in the sacred city<br/>
+                            and join the celebration<br/>
+                            that started the moment<br/>
+                            your trust was sufficient enough<br/>
+                            to forget, and become again a fool<br/>
+                            who thought they could add anything <br/>
+                            to the Full.<br/>
+                            <br/>
+                            May you fare well,<br/>
+                            dearest friend, beloved forger,<br/>
+                            whose fate is written in clear signs:<br/>
+                            <br/>
+                            you will return, now and now and<br/>
+                            now forever.<br/>
+                        </div>
+
+                        <div class="vis" id="return-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="/twenty/">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="./breath.html">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+            const width = 400;
+            const height = 400;
+            const outerCount = 600;
+            const coreCount = 400;
+            const numParticles = outerCount + coreCount;
+            const dotRadius = 2;
+
+            const svg = d3.select("#return-vis")
+              .append("svg")
+              .attr("width", width)
+              .attr("height", height);
+
+            const center = { x: width / 2, y: height / 2 };
+            const maxRadius = Math.min(width, height) / 2 - 10;
+
+            const celebrationColors = ["#001f3f", "#FFD700", "#ffffff", "#000000"]; // navy, gold, white, black
+
+            const particles = d3.range(numParticles).map((id) => {
+              const isOuter = id < outerCount;
+
+              const radius = isOuter
+                ? d3.randomUniform(maxRadius * 0.55, maxRadius * 0.9)()
+                : d3.randomUniform(5, maxRadius * 0.35)();
+
+              const angle = Math.random() * Math.PI * 2;
+
+              return {
+                id,
+                group: isOuter ? "outer" : "core",
+                baseRadius: radius,
+                radius,
+                angle,
+                x: center.x + radius * Math.cos(angle),
+                y: center.y + radius * Math.sin(angle),
+                alive: true,
+                alpha: 1,
+                color: isOuter ? "#111111" : celebrationColors[Math.floor(Math.random() * celebrationColors.length)]
+              };
+            });
+
+            const dots = svg.selectAll("circle.particle")
+              .data(particles, d => d.id)
+              .enter()
+              .append("circle")
+              .attr("class", "particle")
+              .attr("r", dotRadius)
+              .attr("fill", d => d.color)
+              .style("opacity", d => d.alpha);
+
+            const coreIds = particles.filter(p => p.group === "core").map(p => p.id);
+            const lastCoreId = coreIds[Math.floor(coreIds.length / 2)]; // pick one core particle to "return"
+
+            // phase timing (seconds)
+            const phase0End = 8;   // ring & core orbit
+            const phase1End = 18;  // outer dissolves, core drifts out
+            const phase2End = 28;  // celebration spiral
+            const phase3End = 36;  // last returns & fades
+
+            let lastElapsed = 0;
+
+            const timer = d3.timer((elapsed) => {
+              const t = elapsed / 1000;
+              const dt = (elapsed - lastElapsed) / 1000;
+              lastElapsed = elapsed;
+
+              let aliveCount = 0;
+
+              particles.forEach(p => {
+                if (!p.alive) return;
+
+                if (t < phase0End) {
+                  // Phase 0: gentle orbit, outer barrier + inner core
+                  const outerSpeed = 0.5;
+                  const coreSpeed  = 0.9;
+                  const breathing  = 2;
+
+                  if (p.group === "outer") {
+                    p.angle += outerSpeed * dt;
+                    p.radius = p.baseRadius + Math.sin(t * 0.4 + p.id) * breathing;
+                  } else {
+                    p.angle += coreSpeed * dt;
+                    p.radius = p.baseRadius + Math.sin(t * 0.8 + p.id) * (breathing * 0.5);
+                  }
+
+                  p.alpha = 1;
+                } else if (t < phase1End) {
+                  // Phase 1: outer dissolves first, core begins to move outward (unburdening)
+                  const phaseT = (t - phase0End) / (phase1End - phase0End); // 0→1
+
+                  if (p.group === "outer") {
+                    const outerSpeed = 0.6;
+                    const driftOut = 25; // px/s
+
+                    p.angle += outerSpeed * dt;
+                    p.radius += driftOut * dt + (Math.random() - 0.5) * 5 * dt;
+
+                    p.alpha = Math.max(0, 1 - phaseT); // fade outer barrier
+                    if (p.alpha === 0) {
+                      p.alive = false;
+                    }
+                  } else {
+                    const coreSpeed = 1.0;
+                    const targetExtra = maxRadius * 0.3; // move outward some
+
+                    p.angle += coreSpeed * dt;
+                    const targetRadius = p.baseRadius + targetExtra * phaseT;
+                    p.radius += (targetRadius - p.radius) * 0.5 * dt;
+                    p.radius += (Math.random() - 0.5) * 6 * dt;
+                    p.alpha = 1;
+                  }
+                } else if (t < phase2End) {
+                  // Phase 2: celebration spiral for core, outer already gone
+                  if (p.group === "outer") {
+                    p.alive = false;
+                    p.alpha = 0;
+                  } else {
+                    const chaosT = (t - phase1End) / (phase2End - phase1End); // 0→1
+                    const spiralRadialSpeed = 30;  // px/s
+                    const spiralAngularSpeed = 2.0; // rad/s
+                    const jitterA = (Math.random() - 0.5) * 3 * chaosT * dt;
+                    const jitterR = (Math.random() - 0.5) * 40 * chaosT * dt;
+
+                    p.angle += spiralAngularSpeed * dt + jitterA;
+                    p.radius += spiralRadialSpeed * dt + jitterR;
+                    p.radius = Math.max(10, Math.min(maxRadius, p.radius));
+
+                    p.alpha = 1;
+                  }
+                } else if (t < phase3End) {
+                  // Phase 3: everything fades except one, which returns to center then fades
+                  const fadeOthersT = Math.min(1, (t - phase2End) / 4); // 0→1 over first 4s of phase
+                  const lastReturnT = Math.max(0, (t - (phase2End + 2)) / (phase3End - (phase2End + 2))); // return over last seconds
+
+                  if (p.id !== lastCoreId) {
+                    // non-final particles fade out in place
+                    p.alpha = Math.max(0, 1 - fadeOthersT);
+                    if (p.alpha === 0) {
+                      p.alive = false;
+                    }
+                  } else {
+                    // last particle: spiral a bit, then return to center and fade
+                    const returnStart = phase2End + 2; // start returning after a short delay
+                    if (t < returnStart) {
+                      // small continuation of spiral
+                      p.angle += 1.5 * dt;
+                      p.radius += 10 * dt;
+                    } else {
+                      // ease radius back to 0
+                      p.angle += 1.0 * dt;
+                      p.radius += (0 - p.radius) * 0.8 * dt;
+                    }
+
+                    // fade only near the end
+                    const fadeStart = phase3End - 3;
+                    if (t > fadeStart) {
+                      const localT = (t - fadeStart) / (phase3End - fadeStart);
+                      p.alpha = Math.max(0, 1 - localT);
+                      if (p.alpha === 0) {
+                        p.alive = false;
+                      }
+                    } else {
+                      p.alpha = 1;
+                    }
+                  }
+                } else {
+                  // end
+                  p.alpha = 0;
+                  p.alive = false;
+                }
+
+                if (p.alive) {
+                  p.x = center.x + p.radius * Math.cos(p.angle);
+                  p.y = center.y + p.radius * Math.sin(p.angle);
+                  aliveCount++;
+                } else {
+                  p.alpha = 0;
+                }
+              });
+
+              dots
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .style("opacity", d => d.alpha);
+
+              if (aliveCount === 0) {
+                timer.stop();
+              }
+            });
+        </script>
+        
+    </body>
+</html>

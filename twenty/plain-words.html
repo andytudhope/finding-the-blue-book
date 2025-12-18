@@ -1,0 +1,219 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - Directed</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/plain-words.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>Directed</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May you find a way<br/>
+                            to plain words<br/>
+                            and the direct ways of loving<br/>
+                            from which they grow.<br/>
+                            <br/>
+                            No matter where you are,<br/>
+                            there is a sunbeam<br/>
+                            streaming through the window,<br/>
+                            waiting patiently to touch you,<br/>
+                            to help you learn from within<br/>
+                            your own skin what this<br/>
+                            life is.<br/>
+                            <br/>
+                            And if not a sunbeam,<br/>
+                            then a raindrop, or a gust<br/>
+                            of bracing wind.<br/>
+                            And if there is no window,<br/>
+                            then there is always your heart,<br/>
+                            no matter how strong the bars<br/>
+                            you’ve had to build around it.<br/>
+                        </div>
+
+                        <div class="vis" id="plain-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="./taste.html">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="./simple.html">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+            // Requires: <div id="sunbeam-vis"></div> and d3 v7 loaded
+
+const width = 400;
+const height = 450;
+
+const svg = d3.select("#plain-vis")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+// background
+svg.append("rect")
+  .attr("width", width)
+  .attr("height", height)
+  .attr("fill", "none");
+
+// sun + halo
+const sunCenter = { x: width / 2, y: height * 0.22 };
+const sunRadius = 110;
+const haloOuter = sunRadius + 30;
+const haloInner = sunRadius + 8;
+
+// main sun disc
+svg.append("circle")
+  .attr("cx", sunCenter.x)
+  .attr("cy", sunCenter.y)
+  .attr("r", sunRadius)
+  .attr("fill", "#d9b24c");
+
+// halo base ring
+svg.append("circle")
+  .attr("cx", sunCenter.x)
+  .attr("cy", sunCenter.y)
+  .attr("r", (haloOuter + haloInner) / 2)
+  .attr("fill", "none")
+  .attr("stroke", "#8ba6c5")
+  .attr("stroke-width", haloOuter - haloInner);
+
+// halo rays (wedges)
+const rayCount = 36;
+const haloColors = ["#2c6f4f", "#f4d46a", "#4c7fb3", "#f7e6b5"];
+
+for (let i = 0; i < rayCount; i++) {
+  const a0 = (i / rayCount) * 2 * Math.PI;
+  const a1 = ((i + 1) / rayCount) * 2 * Math.PI;
+  const color = haloColors[i % haloColors.length];
+
+  const x0i = sunCenter.x + haloInner * Math.cos(a0);
+  const y0i = sunCenter.y + haloInner * Math.sin(a0);
+  const x1i = sunCenter.x + haloInner * Math.cos(a1);
+  const y1i = sunCenter.y + haloInner * Math.sin(a1);
+  const x0o = sunCenter.x + haloOuter * Math.cos(a0);
+  const y0o = sunCenter.y + haloOuter * Math.sin(a0);
+  const x1o = sunCenter.x + haloOuter * Math.cos(a1);
+  const y1o = sunCenter.y + haloOuter * Math.sin(a1);
+
+  const d = [
+    "M", x0i, y0i,
+    "L", x0o, y0o,
+    "A", haloOuter, haloOuter, 0, 0, 1, x1o, y1o,
+    "L", x1i, y1i,
+    "A", haloInner, haloInner, 0, 0, 0, x0i, y0i,
+    "Z"
+  ].join(" ");
+
+  svg.append("path")
+    .attr("d", d)
+    .attr("fill", color)
+    .attr("opacity", 0.9);
+}
+
+// triangle beam clip
+const beamTopY = sunCenter.y + sunRadius * 0.1;
+const beamBottomY = height - 40;
+const beamHalfWidth = width * 0.47;
+
+const defs = svg.append("defs");
+
+defs.append("clipPath")
+  .attr("id", "beam-clip")
+  .append("polygon")
+  .attr("points", [
+    sunCenter.x, beamTopY,
+    sunCenter.x - beamHalfWidth, beamBottomY,
+    sunCenter.x + beamHalfWidth, beamBottomY
+  ].join(" "));
+
+// beam bands
+const beamColors = [
+  "#b6523c", "#c96b4a", "#d58a4f", "#e0a75a",
+  "#e8c66c", "#e6d678", "#c8d27f", "#9bc184",
+  "#6eac8f", "#4f8fa5", "#4d6cae", "#4c4f93",
+  "#4e3c7b", "#5b345c"
+];
+
+const bandCount = beamColors.length;
+const bandHeight = (beamBottomY - beamTopY) / bandCount;
+
+const beamGroup = svg.append("g")
+  .attr("clip-path", "url(#beam-clip)");
+
+for (let i = 0; i < bandCount; i++) {
+  const y0 = beamTopY + i * bandHeight;
+  beamGroup.append("rect")
+    .attr("x", 0)
+    .attr("y", y0)
+    .attr("width", width)
+    .attr("height", bandHeight + 1)
+    .attr("fill", beamColors[i]);
+}
+
+// thin horizontal separators in beam
+for (let i = 0; i <= bandCount; i++) {
+  const y = beamTopY + i * bandHeight;
+  beamGroup.append("line")
+    .attr("x1", sunCenter.x - beamHalfWidth)
+    .attr("y1", y)
+    .attr("x2", sunCenter.x + beamHalfWidth)
+    .attr("y2", y)
+    .attr("stroke", "#f5e6d0")
+    .attr("stroke-width", 0.7)
+    .attr("opacity", 0.6);
+}
+
+// small oval “cells” along beam center
+const cellCount = bandCount;
+for (let i = 0; i < cellCount; i++) {
+  const cy = beamTopY + (i + 0.5) * bandHeight;
+  const cx = sunCenter.x;
+  const rx = beamHalfWidth * 0.19;
+  const ry = bandHeight * 0.34;
+
+  beamGroup.append("ellipse")
+    .attr("cx", cx)
+    .attr("cy", cy)
+    .attr("rx", rx)
+    .attr("ry", ry)
+    .attr("fill", "#f3e3c0")
+    .attr("opacity", 0.9)
+    .attr("stroke", "#c4a87a")
+    .attr("stroke-width", 0.6);
+}
+        </script>
+        
+    </body>
+</html>

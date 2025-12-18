@@ -1,0 +1,331 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - Neap Tide</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/tidings.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>Neap Tide</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May you come to the ocean,<br/>
+                            and offer your heart up<br/>
+                            to be cleaned,<br/>
+                            jewel by jewel<br/>
+                            in the depths that beckon.<br/>
+                            <br/>
+                            May you come back<br/>
+                            empty-handed from such<br/>
+                            experiences, joyful<br/>
+                            to let go what you knew,<br/>
+                            what was definitely true.<br/>
+                            <br/>
+                            May your warm body<br/>
+                            be at home, here<br/>
+                            in sparkling blue,<br/>
+                            taste of salt, touch of fire<br/>
+                            all you need for a life<br/>
+                            <br/>
+                            giving thanks to all<br/>
+                            that brings you, now,<br/>
+                            to overflow as the tide<br/>
+                            tells you, your heart <br/>
+                            is the ocean itself.<br/>
+                            <br/>
+                            Take back all the shells<br/>
+                            you once needed,<br/>
+                            leave the beach clear,<br/>
+                            open, without a trail<br/>
+                            to the far horizon.<br/>
+                        </div>
+
+                        <div class="vis" id="tide-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="./simple.html">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="./happy.html">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+            // Requires: <div id="ocean-vis"></div> and d3 v7
+
+const width = 400;
+const height = 400;
+
+const svg = d3.select("#tide-vis")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+// --- background -------------------------------------------------
+
+svg.append("rect")
+  .attr("width", width)
+  .attr("height", height)
+  .attr("fill", "none");
+
+// ocean band
+const oceanTop = height * 0.32;
+
+const defs = svg.append("defs");
+
+const oceanGrad = defs.append("linearGradient")
+  .attr("id", "ocean-grad")
+  .attr("x1", "0%")
+  .attr("y1", "0%")
+  .attr("x2", "0%")
+  .attr("y2", "100%");
+oceanGrad.append("stop").attr("offset", "0%").attr("stop-color", "#1c4f82");
+oceanGrad.append("stop").attr("offset", "55%").attr("stop-color", "#0b355b");
+oceanGrad.append("stop").attr("offset", "100%").attr("stop-color", "#071d32");
+
+svg.append("rect")
+  .attr("x", 0)
+  .attr("y", oceanTop)
+  .attr("width", width)
+  .attr("height", height - oceanTop)
+  .attr("fill", "url(#ocean-grad)");
+
+// shallow “tideline”
+svg.append("rect")
+const tideHeight = 10;
+const tideCurve = d3.path();
+tideCurve.moveTo(0, oceanTop);
+for (let i = 0; i <= 60; i++) {
+  const t = i / 60;
+  const x = t * width;
+  const y = oceanTop - 3 * Math.sin(Math.PI * t); // very shallow arc
+  tideCurve.lineTo(x, y);
+}
+tideCurve.lineTo(width, oceanTop + tideHeight);
+tideCurve.lineTo(0, oceanTop + tideHeight);
+tideCurve.closePath();
+
+svg.append("path")
+  .attr("d", tideCurve.toString())
+  .attr("fill", "#f1d39a");
+
+// --- layered waves (slow, subtle) -------------------------------
+
+const waveGroup = svg.append("g");
+const waveLayers = d3.range(4).map(i => ({
+  baseY: oceanTop + 20 + i * 35,
+  amp: 6 + i * 2,
+  freq: 0.7 + i * 0.25,
+  phase: Math.random() * Math.PI * 2,
+  width: width + 80
+}));
+
+const waveSel = waveGroup.selectAll("path.wave")
+  .data(waveLayers)
+  .enter()
+  .append("path")
+  .attr("class", "wave")
+  .attr("fill", "none")
+  .attr("stroke", "#4bb5d3")
+  .attr("stroke-width", 0.9)
+  .style("opacity", (d, i) => 0.45 - i * 0.08);
+
+function wavePath(layer, t) {
+  const pts = [];
+  const n = 60;
+  for (let i = 0; i <= n; i++) {
+    const x = (i / n) * layer.width - 40;
+    const y = layer.baseY +
+      layer.amp * Math.sin(layer.freq * (x / width) * Math.PI * 2 + layer.phase + t * 0.4);
+    pts.push([x, y]);
+  }
+  return d3.line().curve(d3.curveCatmullRom.alpha(0.7))(pts);
+}
+
+// --- heart-source (where jewels fall from) ----------------------
+
+const source = { x: width * 0.5, y: oceanTop * 0.45 };
+
+const sourceRing = svg.append("circle")
+  .attr("cx", source.x)
+  .attr("cy", source.y)
+  .attr("r", 14)
+  .attr("fill", "none")
+  .attr("stroke", "#f1d39a")
+  .attr("stroke-width", 1.2)
+  .style("opacity", 0.9);
+
+const sourceCore = svg.append("circle")
+  .attr("cx", source.x)
+  .attr("cy", source.y)
+  .attr("r", 4)
+  .attr("fill", "#f7c76d")
+  .style("opacity", 0.95);
+
+// --- jewels (falling, dissolving into tide) ---------------------
+
+const jewelColors = ["#f7e3a2", "#f2c58b", "#f8f0d3", "#f7d07a", "#f1b894"];
+const jewels = [];
+let nextJewelId = 0;
+
+const jewelGroup = svg.append("g");
+let jewelSel = jewelGroup.selectAll("circle.jewel");
+
+const spawnInterval = 380;
+const sinkDepth = height * 0.86;
+const fallDuration = 4200;
+const dissolveDuration = 3000;
+let lastSpawn = 0;
+
+// --- sweeping tide (clears shells / trails) ---------------------
+
+const tideGroup = svg.append("g");
+const tideFoam = tideGroup.append("rect")
+  .attr("x", -width)
+  .attr("y", oceanTop - 8)
+  .attr("width", width * 2)
+  .attr("height", 16)
+  .attr("fill", "rgba(240,243,246,0.22)")
+  .style("opacity", 0);
+
+let tideStart = null;
+const tidePeriod = 18000;
+
+// --- animation loop ---------------------------------------------
+
+let last = 0;
+
+d3.timer(elapsed => {
+  const t = elapsed;
+  const dt = t - last;
+  last = t;
+
+  const timeSec = t / 1000;
+
+  // heart pulse
+  const pulse = 1 + 0.12 * Math.sin(timeSec * 1.4);
+  sourceRing
+    .attr("r", 14 * pulse)
+    .style("opacity", 0.7 + 0.2 * Math.sin(timeSec * 0.8));
+
+  // waves
+  waveSel.attr("d", d => wavePath(d, timeSec));
+
+  // spawn jewels
+  if (t - lastSpawn > spawnInterval) {
+    jewels.push({
+      id: nextJewelId++,
+      born: t,
+      phase: Math.random() * Math.PI * 2,
+      color: jewelColors[Math.floor(Math.random() * jewelColors.length)],
+      drift: (Math.random() - 0.5) * 45
+    });
+    lastSpawn = t;
+  }
+
+  // update jewels, remove fully dissolved ones
+  for (let i = jewels.length - 1; i >= 0; i--) {
+    const j = jewels[i];
+    const age = t - j.born;
+
+    if (age > fallDuration + dissolveDuration) {
+      jewels.splice(i, 1);
+    }
+  }
+
+  jewelSel = jewelGroup
+    .selectAll("circle.jewel")
+    .data(jewels, d => d.id);
+
+  jewelSel.exit().remove();
+
+  const entered = jewelSel.enter()
+    .append("circle")
+    .attr("class", "jewel")
+    .attr("r", 2.6)
+    .attr("fill", d => d.color)
+    .style("opacity", 0);
+
+  jewelSel = entered.merge(jewelSel);
+
+  jewelSel.each(function (d, idx) {
+    const age = t - d.born;
+    const pFall = Math.max(0, Math.min(1, age / fallDuration));
+    const pDissolve = Math.max(0, Math.min(1, (age - fallDuration) / dissolveDuration));
+
+    // falling phase: from source into ocean
+    const yFall = source.y + (sinkDepth - source.y) * pFall;
+    const xFall = source.x + d.drift * Math.sin(pFall * Math.PI + d.phase);
+
+    // spiral-like settling: once in depths, drift outward along angle
+    const angle = idx * (Math.PI * (3 - Math.sqrt(5))); // golden angle
+    const radius = 8 + 22 * pDissolve;
+    const xSpiral = xFall + radius * Math.cos(angle);
+    const ySpiral = yFall + radius * Math.sin(angle) * 0.5;
+
+    const x = age < fallDuration ? xFall : xSpiral;
+    const y = age < fallDuration ? yFall : ySpiral;
+
+    // opacity: fade in on descent, then fade out as tide claims it
+    let opacity;
+    if (age < fallDuration * 0.3) {
+      opacity = (age / (fallDuration * 0.3));
+    } else if (age < fallDuration) {
+      opacity = 1;
+    } else {
+      opacity = 1 - pDissolve;
+    }
+
+    d3.select(this)
+      .attr("cx", x)
+      .attr("cy", y)
+      .attr("r", 2.2 + 0.9 * (1 - Math.exp(-2 * pFall)))
+      .style("opacity", opacity);
+  });
+
+  // tide sweep
+  if (tideStart === null || t - tideStart > tidePeriod) {
+    tideStart = t;
+  }
+  const tidePhase = (t - tideStart) / tidePeriod; // 0→1
+  const tideX = -width + tidePhase * (width * 2);
+
+  tideFoam
+    .attr("x", tideX)
+    .style("opacity", 0.15 * Math.sin(Math.min(Math.PI, tidePhase * Math.PI)));
+
+});
+
+        </script>
+        
+    </body>
+</html>

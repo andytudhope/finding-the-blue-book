@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - Be Happy</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/happy.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>Be Happy</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May you be happy<br/>
+                            as it is meant in the old songs<br/>
+                            of sages who found a way<br/>
+                            to be here, now,<br/>
+                            with us: simply this<br/>
+                            awareness. Happy<br/>
+                            as that man dancing<br/>
+                            to an old busker's guitar <br/>
+                            outside the aquarium,<br/>
+                            or as that guy on the skateboard<br/>
+                            who heard me singing to you<br/>
+                            and smiled as he passed through<br/>
+                            a seemingly private moment,<br/>
+                            happy in this life,<br/>
+                            whatever arises, or lingers, or leaves,<br/>
+                            happy that all of it <br/>
+                            is the message of life itself,<br/>
+                            happy to let go and live<br/>
+                            the full reality of who you are,<br/>
+                            happy enough<br/>
+                            to be overwhelmed by love.<br/>
+                        </div>
+
+                        <div class="vis" id="happy-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="./tidings.html">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="./faith.html">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+            const width = 420;
+            const height = 420;
+
+            const svg = d3.select("#happy-vis")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+            // --- GRID SETUP ---
+            const cols = 32;
+            const rows = 24;
+            const cellW = width / cols;
+            const cellH = height / rows;
+
+            // approximate palette from Maharaji's blanket
+            const baseGrey   = "none";
+            const darkGrey   = "#30333a";
+            const red        = "#b5383b";
+            const darkRed    = "#7b2222";
+            const teal       = "#2f6f78";
+            const lightTeal  = "#4b8f9a";
+            const paleGrey   = "#c7c9cd";
+
+            // vertical stripes (x direction) from left to right
+            // start & width in column units
+            const vStripes = [
+            { start: 0,  width: 4,  color: baseGrey },
+            { start: 4,  width: 2,  color: teal },
+            { start: 6,  width: 3,  color: baseGrey },
+            { start: 9,  width: 2,  color: red },
+            { start: 11, width: 3,  color: baseGrey },
+            { start: 14, width: 2,  color: teal },
+            { start: 16, width: 4,  color: baseGrey },
+            { start: 20, width: 2,  color: red },
+            { start: 22, width: 3,  color: baseGrey },
+            { start: 25, width: 2,  color: teal },
+            { start: 27, width: 5,  color: baseGrey }
+            ];
+
+            // horizontal stripes (y direction) from top to bottom
+            const hStripes = [
+            { start: 0,  width: 3,  color: baseGrey },
+            { start: 3,  width: 2,  color: teal },
+            { start: 5,  width: 3,  color: baseGrey },
+            { start: 8,  width: 2,  color: red },
+            { start: 10, width: 4,  color: baseGrey },
+            { start: 14, width: 2,  color: teal },
+            { start: 16, width: 3,  color: baseGrey },
+            { start: 19, width: 2,  color: red },
+            { start: 21, width: 3,  color: baseGrey }
+            ];
+
+            function stripeColor(index, stripes, fallback) {
+            for (const s of stripes) {
+                if (index >= s.start && index < s.start + s.width) return s.color;
+            }
+            return fallback;
+            }
+
+            function blendColor(vCol, hCol) {
+            if (vCol === red && hCol === red) return darkRed;
+            if ((vCol === red && hCol === teal) || (vCol === teal && hCol === red)) return darkGrey;
+            if (vCol === teal && hCol === teal) return lightTeal;
+            if (vCol === baseGrey && hCol === baseGrey) return baseGrey;
+            if (vCol === baseGrey) return hCol;
+            if (hCol === baseGrey) return vCol;
+            return paleGrey;
+            }
+
+            const cells = [];
+            for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                const vCol = stripeColor(c, vStripes, baseGrey);
+                const hCol = stripeColor(r, hStripes, baseGrey);
+                cells.push({
+                r,
+                c,
+                x: c * cellW,
+                y: r * cellH,
+                color: blendColor(vCol, hCol)
+                });
+            }
+            }
+
+            const cellSel = svg.selectAll("rect.cell")
+            .data(cells)
+            .enter()
+            .append("rect")
+            .attr("class", "cell")
+            .attr("width", cellW + 1)
+            .attr("height", cellH + 1)
+            .attr("fill", d => d.color);
+
+            // --- GENTLE WIND/WAVE ---
+            function waveY(r, c, t) {
+            return (
+                3.5 * Math.sin(t * 0.0007 + r * 0.6) +
+                2.5 * Math.sin(t * 0.0011 + c * 0.7)
+            );
+            }
+
+            function waveX(r, c, t) {
+            return (
+                2.0 * Math.sin(t * 0.0005 + r * 0.8) +
+                1.0 * Math.sin(t * 0.0009 + c * 0.4)
+            );
+            }
+
+            d3.timer(t => {
+            cellSel
+                .attr("x", d => d.x + waveX(d.r, d.c, t))
+                .attr("y", d => d.y + waveY(d.r, d.c, t));
+            });
+        </script>
+        
+    </body>
+</html>

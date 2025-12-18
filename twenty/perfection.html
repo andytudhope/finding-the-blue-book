@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - Perfect</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/perfection.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>Perfect</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May your humanity enfold you<br/>
+                            in beautiful limitation.<br/>
+                            <br/>
+                            May you be humbled<br/>
+                            by the honour it is to be born<br/>
+                            thus, embodied,<br/>
+                            breathing stardust,<br/>
+                            neither angel nor alien,<br/>
+                            but something more strange:<br/>
+                            a genuine to god human being.<br/>
+                            <br/>
+                            May you—humbled, honoured,<br/>
+                            at home in your own big heart—<br/>
+                            turn to receive in good faith<br/>
+                            this gift that no other <br/>
+                            aspect of creation can face,<br/>
+                            greater than any word,<br/>
+                            for there is no more news<br/>
+                            and no saviour to come:<br/>
+                            all that has been sealed.<br/>
+                            <br/>
+                            Now is the time.<br/>
+                            Step forward, flawed human,<br/>
+                            and find the crack you are<br/>
+                            to be how the universe<br/>
+                            perfects Thouself.<br/>
+                        </div>
+
+                        <div class="vis" id="perfect-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="./blessed.html">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="/twenty-one">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+            // assumes d3 is loaded and a div#perfect-vis exists
+
+const width = 400;
+const height = 400;
+const margin = 20;
+const gapSizeDeg = 20;
+const gapSize = (gapSizeDeg * Math.PI) / 180;
+const particlesPerEnso = 220;
+const maxEnsos = 35;
+
+const svg = d3
+  .select("#perfect-vis")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+const ensos = [];
+let nextSpawnTime = Infinity;
+
+function randomBetween(a, b) {
+  return a + Math.random() * (b - a);
+}
+
+function createEnso() {
+  const pad = 40;
+  const cx = randomBetween(pad, width - pad);
+  const cy = randomBetween(pad, height - pad);
+
+  const maxR = Math.min(
+    cx - margin,
+    width - cx - margin,
+    cy - margin,
+    height - cy - margin
+  );
+  const radius = randomBetween(20, Math.max(50, maxR - 5));
+
+  const group = svg.append("g");
+
+  const particles = d3.range(particlesPerEnso).map(() => ({
+    u0: Math.random(),
+    speed: randomBetween(0.03, 0.06),
+    radJitterAmp: randomBetween(-4, 4),
+    radFreq: randomBetween(0.5, 1.5),
+    radPhase: Math.random() * Math.PI * 2,
+    angJitterAmp: randomBetween(-0.08, 0.08),
+    angFreq: randomBetween(0.4, 1.2),
+    angPhase: Math.random() * Math.PI * 2
+  }));
+
+  const circles = group
+    .selectAll("circle")
+    .data(particles)
+    .enter()
+    .append("circle")
+    .attr("r", () => randomBetween(0.6, 2.4))
+    .attr("fill", "black");
+
+  const gapStart = Math.random() * Math.PI * 2;
+
+  ensos.push({
+    cx,
+    cy,
+    radius,
+    particles,
+    circles,
+    gapStart
+  });
+}
+
+// start with exactly one enso
+createEnso();
+// schedule future spawns to start a bit later
+nextSpawnTime = randomBetween(2, 4.5);
+
+const timer = d3.timer((elapsed) => {
+  const t = elapsed / 1000;
+
+  if (ensos.length < maxEnsos && t > nextSpawnTime) {
+    createEnso();
+    nextSpawnTime = t + randomBetween(2, 4.5);
+  }
+
+  ensos.forEach((enso) => {
+    const arcLen = 2 * Math.PI - gapSize;
+
+    enso.circles.each(function (d) {
+      const u = (d.u0 + d.speed * t) % 1;
+      const baseAngle = enso.gapStart + gapSize + u * arcLen;
+
+      const angle =
+        baseAngle +
+        d.angJitterAmp * Math.sin(d.angFreq * t + d.angPhase);
+
+      const r =
+        enso.radius +
+        d.radJitterAmp * Math.sin(d.radFreq * t + d.radPhase);
+
+      const x = enso.cx + Math.cos(angle) * r;
+      const y = enso.cy + Math.sin(angle) * r;
+
+      const alpha = Math.sin(Math.PI * u);
+
+      d3.select(this)
+        .attr("cx", x)
+        .attr("cy", y)
+        .attr("opacity", alpha);
+    });
+  });
+});
+
+        </script>
+        
+    </body>
+</html>

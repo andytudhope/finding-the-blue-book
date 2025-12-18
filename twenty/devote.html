@@ -1,0 +1,287 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - Devoted Too</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/devoted.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>Devoted Too</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May you devote yourself<br/>
+                            to life and all the many deaths<br/>
+                            that living fully entails,<br/>
+                            seeking excellence in every moment<br/>
+                            and accepting imperfection,<br/>
+                            for so much seems to be off<br/>
+                            from your limited perspective.<br/>
+                            <br/>
+                            May you know the cracks<br/>
+                            in everything and the beauty <br/>
+                            that they bring, the light preserved<br/>
+                            in a niche, anointed by your <br/>
+                            willingness to worship<br/>
+                            in a way that does not interrupt<br/>
+                            the unseen flow of generosity.<br/>
+                            <br/>
+                            May the full force of your devotion<br/>
+                            pull you deep into the ocean<br/>
+                            of your own heart, here,<br/>
+                            where you know love as a tide <br/>
+                            that always returns you<br/>
+                            to life, life, everlasting life.<br/>
+                            <br/>
+                            May the quality of your love<br/>
+                            hold all these many contradictions<br/>
+                            in your broke open heart<br/>
+                            and may you find these breaks<br/>
+                            to be nothing other<br/>
+                            than the breath of God,<br/>
+                            devoted to getting you home.<br/>
+                        </div>
+
+                        <div class="vis" id="devotion-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="./faith.html">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="./joy.html">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+            // Requires: <div id="cracks-vis"></div> and d3 v7
+
+const width = 400;
+const height = 400;
+
+const svg = d3.select("#devotion-vis")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+// --- background slab ---
+svg.append("rect")
+  .attr("x", 0)
+  .attr("y", 0)
+  .attr("width", width)
+  .attr("height", height)
+  .attr("fill", "none");
+
+// --- glow filter for light through cracks ---
+const defs = svg.append("defs");
+
+const glowFilter = defs.append("filter")
+  .attr("id", "crack-glow")
+  .attr("x", "-20%")
+  .attr("y", "-20%")
+  .attr("width", "140%")
+  .attr("height", "140%");
+
+glowFilter.append("feGaussianBlur")
+  .attr("stdDeviation", 3)
+  .attr("result", "blur");
+
+glowFilter.append("feColorMatrix")
+  .attr("in", "blur")
+  .attr("type", "matrix")
+  .attr("values", `
+    1 0 0 0 0
+    0 1 0 0 0
+    0 0 1 0 0
+    0 0 0 0.9 0
+  `)
+  .attr("result", "coloredBlur");
+
+glowFilter.append("feMerge")
+  .selectAll("feMergeNode")
+  .data(["coloredBlur"])
+  .enter()
+  .append("feMergeNode")
+  .attr("in", d => d);
+
+// --- crack generation (blue, ice-like) ---
+
+function makeCrack(i) {
+  const steps = 8 + Math.floor(Math.random() * 8);
+  const path = [];
+  let x, y, angle;
+
+  // start on a random edge
+  const edge = Math.floor(Math.random() * 4);
+  if (edge === 0) {          // top
+    x = Math.random() * width;
+    y = 0;
+    angle = (Math.PI / 2) + (Math.random() - 0.5) * 0.7;
+  } else if (edge === 1) {   // right
+    x = width;
+    y = Math.random() * height;
+    angle = Math.PI + (Math.random() - 0.5) * 0.7;
+  } else if (edge === 2) {   // bottom
+    x = Math.random() * width;
+    y = height;
+    angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.7;
+  } else {                   // left
+    x = 0;
+    y = Math.random() * height;
+    angle = (Math.random() - 0.5) * 0.7;
+  }
+
+  path.push([x, y]);
+
+  for (let s = 0; s < steps; s++) {
+    const stepLen = 20 + Math.random() * 40;
+    angle += (Math.random() - 0.5) * 0.6;
+    x += Math.cos(angle) * stepLen;
+    y += Math.sin(angle) * stepLen;
+
+    // clamp inside slightly inset area to keep cracks visible
+    x = Math.max(10, Math.min(width - 10, x));
+    y = Math.max(10, Math.min(height - 10, y));
+
+    path.push([x, y]);
+  }
+
+  return {
+    id: i,
+    points: path,
+    phase: Math.random() * Math.PI * 2
+  };
+}
+
+const numCracks = 18;
+const cracks = d3.range(numCracks).map(i => makeCrack(i));
+
+const lineGen = d3.line()
+  .x(d => d[0])
+  .y(d => d[1])
+  .curve(d3.curveCatmullRom.alpha(0.6));
+
+// --- light layer (glow) ---
+const glowPaths = svg.append("g")
+  .attr("class", "glow-layer")
+  .selectAll("path.glow")
+  .data(cracks, d => d.id)
+  .enter()
+  .append("path")
+  .attr("class", "glow")
+  .attr("d", d => lineGen(d.points))
+  .attr("fill", "none")
+  .attr("stroke", "#fff")
+  .attr("stroke-width", 5)
+  .attr("stroke-linecap", "round")
+  .attr("stroke-linejoin", "round")
+  .attr("filter", "url(#crack-glow)")
+  .style("opacity", 0.0);
+
+// --- crack lines (sharp blue) ---
+const crackPaths = svg.append("g")
+  .attr("class", "crack-layer")
+  .selectAll("path.crack")
+  .data(cracks, d => d.id)
+  .enter()
+  .append("path")
+  .attr("class", "crack")
+  .attr("d", d => lineGen(d.points))
+  .attr("fill", "none")
+  .attr("stroke", "#4fb2ff")
+  .attr("stroke-width", 1.4)
+  .attr("stroke-linecap", "round")
+  .attr("stroke-linejoin", "round")
+  .style("opacity", 0.85);
+
+// --- small light niches at crack intersections / midpoints ---
+const niches = [];
+
+cracks.forEach((crack, i) => {
+  const pts = crack.points;
+  for (let j = 1; j < pts.length - 1; j += 2) {
+    const [x0, y0] = pts[j];
+    const [x1, y1] = pts[j + 1] || pts[j];
+    const mx = (x0 + x1) / 2;
+    const my = (y0 + y1) / 2;
+    niches.push({
+      x: mx,
+      y: my,
+      phase: Math.random() * Math.PI * 2
+    });
+  }
+});
+
+const nicheSel = svg.append("g")
+  .attr("class", "niches")
+  .selectAll("circle.niche")
+  .data(niches)
+  .enter()
+  .append("circle")
+  .attr("class", "niche")
+  .attr("cx", d => d.x)
+  .attr("cy", d => d.y)
+  .attr("r", 2.3)
+  .attr("fill", "#e7f6ff")
+  .style("opacity", 0.0);
+
+// --- animation: light breathing through cracks ---
+
+d3.timer(t => {
+  const time = t / 1000;
+
+  // glow pulses unevenly along different cracks
+  glowPaths.style("opacity", d => {
+    const base = 0.18 + 0.12 * Math.sin(time * 0.8 + d.phase);
+    const slow  = 0.1 * (0.5 + 0.5 * Math.sin(time * 0.25 + d.phase * 0.7));
+    return Math.max(0, base + slow);
+  });
+
+  // cracks shimmer very slightly
+  crackPaths.style("opacity", d => {
+    return 0.75 + 0.1 * Math.sin(time * 0.9 + d.phase * 1.3);
+  });
+
+  // light niches (tiny pockets where light is preserved)
+  nicheSel
+    .attr("r", d => {
+      const pulse = 1 + 0.7 * Math.sin(time * 1.3 + d.phase);
+      return 1.7 * pulse;
+    })
+    .style("opacity", d => {
+      const v = 0.15 + 0.35 * (0.5 + 0.5 * Math.sin(time * 1.1 + d.phase));
+      return v;
+    });
+});
+
+        </script>
+        
+    </body>
+</html>

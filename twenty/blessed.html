@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - Blessing</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>Blessing</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May you be blessed<br/>
+                            with at least one afternoon<br/>
+                            in a park, watching the late sun<br/>
+                            reflect off leaves as they move<br/>
+                            softly in a gentle wind,<br/>
+                            all these oval pools of light <br/>
+                            letting you know that it really is<br/>
+                            this simple.<br/>
+                        </div>
+
+                        <div class="vis" id="blessing-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="./timeless.html">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="./perfection.html">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+             const width = 400;
+const height = 400;
+
+const svg = d3.select("#blessing-vis")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+const defs = svg.append("defs");
+
+const blurFilter = defs.append("filter")
+  .attr("id", "dapple-blur")
+  .attr("x", "-30%")
+  .attr("y", "-30%")
+  .attr("width", "160%")
+  .attr("height", "160%");
+
+blurFilter.append("feGaussianBlur")
+  .attr("stdDeviation", 6)
+  .attr("result", "blur");
+
+blurFilter.append("feColorMatrix")
+  .attr("in", "blur")
+  .attr("type", "matrix")
+  .attr("values", `
+    1 0 0 0 0
+    0 1 0 0 0
+    0 0 1 0 0
+    0 0 0 0.75 0
+  `);
+
+// ---- dappled light pools ----
+
+const numPools = 32;
+const safeMargin = 70;
+
+const baseColors = [
+  "#f7e2a3",
+  "#f4d796",
+  "#f9e7ba",
+  "#f1d087"
+];
+
+const pools = d3.range(numPools).map(i => {
+  const c = baseColors[i % baseColors.length];
+  return {
+    x: safeMargin + Math.random() * (width - safeMargin * 2),
+    y: safeMargin + Math.random() * (height - safeMargin * 2),
+    rx: 28 + Math.random() * 32,
+    ry: 14 + Math.random() * 18,
+    phase: Math.random() * Math.PI * 2,
+    driftX: (Math.random() - 0.5) * 0.003,     // very slow drift
+    driftY: (Math.random() - 0.5) * 0.002,
+    wobbleAmp: 1.5 + Math.random() * 2.5,      // very small wobble
+    pulseSpeed: 0.00003 + Math.random() * 0.00002,
+    color: c
+  };
+});
+
+const poolGroups = svg.append("g")
+  .selectAll("g.pool")
+  .data(pools)
+  .enter()
+  .append("g")
+  .attr("class", "pool")
+  .attr("filter", "url(#dapple-blur)");
+
+poolGroups.append("ellipse")
+  .attr("class", "base")
+  .attr("cx", 0)
+  .attr("cy", 0)
+  .attr("rx", d => d.rx)
+  .attr("ry", d => d.ry)
+  .attr("fill", d => d.color)
+  .style("opacity", 0.5);
+
+poolGroups.append("ellipse")
+  .attr("class", "highlight")
+  .attr("cx", 0)
+  .attr("cy", d => -d.ry * 0.2)
+  .attr("rx", d => d.rx * 0.62)
+  .attr("ry", d => d.ry * 0.44)
+  .attr("fill", "#fff8e0")
+  .style("opacity", 0.6);
+
+let last = null;
+
+d3.timer(elapsed => {
+  if (last == null) last = elapsed;
+  const dt = elapsed - last; // ms since last frame
+  last = elapsed;
+
+  poolGroups.each(function(d) {
+    const t = elapsed;
+
+    // very slow drift
+    d.x += d.driftX * dt;
+    d.y += d.driftY * dt;
+
+    // tiny wobble
+    const wobble = Math.sin(t * 0.00015 + d.phase) * d.wobbleAmp;
+
+    // keep inside safe area
+    if (d.x < safeMargin) d.x = safeMargin;
+    if (d.x > width - safeMargin) d.x = width - safeMargin;
+    if (d.y < safeMargin) d.y = safeMargin;
+    if (d.y > height - safeMargin) d.y = height - safeMargin;
+
+    const x = d.x + wobble * 0.4;
+    const y = d.y + wobble * 0.2;
+
+    // very slow brightness pulse
+    const pulse = 0.5 + 0.5 * Math.sin(t * d.pulseSpeed + d.phase);
+
+    d3.select(this)
+      .attr("transform", `translate(${x}, ${y})`);
+
+    d3.select(this).select(".base")
+      .style("opacity", 0.18 + 0.22 * pulse);
+
+    d3.select(this).select(".highlight")
+      .style("opacity", 0.22 + 0.25 * pulse);
+  });
+});
+
+        </script>
+        
+    </body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - One Choice</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/faith.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>One Choice</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May you take this breath<br/>
+                            as if it were your last<br/>
+                            and so walk open hearted<br/>
+                            into all this life you are<br/>
+                            already in,<br/>
+                            <br/>
+                            hailing from the vast unknown,<br/>
+                            headed for the same,<br/>
+                            differentiated by a choice<br/>
+                            to present yourself fully<br/>
+                            before eternity, <br/>
+                            right now, awoken<br/>
+                            in the cave where no time<br/>
+                            has passed for the faithful<br/>
+                            who are here, a silent clock,<br/>
+                            forged by a fool <br/>
+                            with a great and objectless longing<br/>
+                            at last laid to rest<br/>
+                            <br/>
+                            by this sweet breath out,<br/>
+                            and all the trust it holds:<br/>
+                            none of this is mine<br/>
+                            and I accept full responsibility<br/>
+                            as a belonging of life, gifted<br/>
+                            anew with each breath in.<br/>
+                        </div>
+
+                        <div class="vis" id="faith-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="./happy.html">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="./devote.html">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+            const size = 400;
+            const svg = d3.select("#faith-vis")
+            .append("svg")
+            .attr("width", size)
+            .attr("height", size);
+
+            const center = { x: size / 2, y: size / 2 };
+
+            // ---- GOLDEN HEART (behind block) ----
+            const heartPath = d3.path();
+            const hR = 80;
+            const cx = center.x;
+            const cy = center.y + 10;
+
+            heartPath.moveTo(cx, cy + hR * 0.35);
+            heartPath.bezierCurveTo(
+            cx - hR, cy - hR * 0.2,
+            cx - hR * 0.4, cy - hR * 0.9,
+            cx, cy - hR * 0.35
+            );
+            heartPath.bezierCurveTo(
+            cx + hR * 0.4, cy - hR * 0.9,
+            cx + hR, cy - hR * 0.2,
+            cx, cy + hR * 0.35
+            );
+
+            svg.append("path")
+            .attr("d", heartPath.toString())
+            .attr("fill", "none")
+            .attr("stroke", "#f4c96c")
+            .attr("stroke-width", 2)
+            .style("opacity", 0.9);
+
+            // ---- BLACK BLOCK (in front of heart) ----
+            const block = svg.append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", size)
+            .attr("height", size)
+            .attr("fill", "#000")
+            .style("opacity", 1);
+
+            // ---- SPIRAL ----
+            const spiralPath = svg.append("path")
+            .attr("fill", "none")
+            .attr("stroke", "#f4c96c")
+            .attr("stroke-width", 2)
+            .style("opacity", 1);
+
+            // ---- BREATH TIMING ----
+            // In: 3s -> spiral grows 0→1
+            // Pause full: 1s -> spiral stays fully drawn
+            // Out: 3s -> spiral shrinks 1→0
+            // Pause empty: 1s -> spiral stays at point
+            // Total cycle: 8s
+            const inhale = 3000;
+            const pauseFull = 1000;
+            const exhale = 3000;
+            const pauseEmpty = 1000;
+            const cycle = inhale + pauseFull + exhale + pauseEmpty;
+
+            const maxBreaths = 5;            // inhale+exhale cycles
+            const fadeDurationSpiral = 5000;
+            const fadeDurationBlock = 8000;
+
+            let fadeStartSpiral = null;
+            let fadeStartBlock = null;
+
+            d3.timer(elapsed => {
+            const now = elapsed;
+            const cycleIndex = Math.floor(now / cycle);
+            const t = now % cycle; // position within current cycle
+
+            let amp = 0;
+
+            if (cycleIndex >= maxBreaths) {
+                // breathing done
+                amp = 0;
+                if (!fadeStartSpiral) fadeStartSpiral = now;
+            } else {
+                if (t < inhale) {
+                // inhale: 0 -> 1
+                amp = t / inhale;
+                } else if (t < inhale + pauseFull) {
+                // pause at full: 1
+                amp = 1;
+                } else if (t < inhale + pauseFull + exhale) {
+                // exhale: 1 -> 0
+                const u = (t - inhale - pauseFull) / exhale;
+                amp = 1 - u;
+                } else {
+                // pause at empty: 0
+                amp = 0;
+                }
+            }
+
+            // fade spiral
+            if (fadeStartSpiral !== null) {
+                const f = Math.min(1, (now - fadeStartSpiral) / fadeDurationSpiral);
+                spiralPath.style("opacity", 1 - f);
+                if (f >= 1 && fadeStartBlock === null) fadeStartBlock = now;
+            }
+
+            // fade block
+            if (fadeStartBlock !== null) {
+                const f2 = Math.min(1, (now - fadeStartBlock) / fadeDurationBlock);
+                block.style("opacity", 1 - f2);
+                if (f2 >= 1) return true; // stop animation
+            }
+
+            // draw spiral line
+            const turns = 4.5;
+            const totalTheta = turns * 2 * Math.PI;
+            const currentTheta = totalTheta * amp;
+            const steps = Math.max(2, Math.floor(220 * amp));
+            const maxRadius = size * 0.45;
+
+            const points = [];
+            for (let i = 0; i <= steps; i++) {
+                const t0 = (steps === 0 ? 0 : i / steps) * currentTheta;
+                const r = (t0 / totalTheta) * maxRadius;
+                const x = center.x + r * Math.cos(t0);
+                const y = center.y + r * Math.sin(t0);
+                points.push([x, y]);
+            }
+
+            if (points.length > 1) {
+                spiralPath.attr("d", d3.line().curve(d3.curveNatural)(points));
+            } else {
+                spiralPath.attr("d", null);
+            }
+            });
+        </script>
+        
+    </body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>The Yellow Book - Light Meal</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta property="og:type" content="website">
+        <meta property="og:title" content="The Yellow Book">
+        <meta property="og:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta property="og:url" content="https://finding.thebluebook.co.za/twenty/taste.html">
+        <meta property="og:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+        <meta property="og:image:type" content="image/png">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@cryptowanderer">
+        <meta name="twitter:creator" content="@cryptowanderer">
+        <meta name="twitter:title" content="The Yellow Book">
+        <meta name="twitter:description" content="A book within a book, beckoning you into the everlasting refuge">
+        <meta name="twitter:image" content="https://finding.thebluebook.co.za/images/flower-consciousness.png">
+		<link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+	</head>
+	<body class="yellow">
+
+        <div class="y-wrapper">
+            <div class="y-text">
+                <div class="y-poems">
+                    <h2>Light Meal</h2>
+
+                    <div class="columns-container">
+                        <div>
+                            May you learn to take yourself lightly,<br/>
+                            to treat this convention of self<br/>
+                            uncoventionally,<br/>
+                            to see through all the thoughts<br/>
+                            a hollow outline linked to every point,<br/>
+                            but nowhere present as its own thing.<br/>
+                            <br/>
+                            May your devoted searching<br/>
+                            lead you on a straight path<br/>
+                            through the interconnected worlds<br/>
+                            into mercy, both specific to you<br/>
+                            and the ground of all,<br/>
+                            the very material of this womb,<br/>
+                            its constrictions encouraging<br/>
+                            you to flow down and out,<br/>
+                            having loved this body<br/>
+                            and honoured all matter<br/>
+                            from which it is made.<br/>
+                            <br/>
+                            Mercy, to see through this self<br/>
+                            a reality where all are welcomed <br/>
+                            at this run down rest stop<br/>
+                            on the pilgrim's route, where paella<br/>
+                            is waiting on the days when more<br/>
+                            than one wanderer finds their way<br/>
+                            here.<br/>
+                        </div>
+
+                        <div class="vis" id="taste-vis"></div>
+                    </div>
+                    
+
+                    <div class="button-row">
+                        <p class="y-button">
+                            <a href="./particular.html">← previous</a>
+                        </p>
+                        <p class="y-button">
+                            <a href="./plain-words.html">next →</a>
+                        </p>
+                    </div>
+                </div>
+            
+
+            </div>
+        </div>
+
+        <script>
+            const width = 400;
+const height = 400;
+
+const svg = d3.select("#taste-vis")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+// ---------- WOMB OUTLINE (transparent interior, dashed) ----------
+
+const wombCenter = { x: width / 2, y: height * 0.45 };
+const wombRadiusX = 130;
+const wombRadiusY = 170;
+const wombSamples = 120;
+
+const wombPathEl = svg.append("path")
+  .attr("fill", "none")                // transparent interior
+  .attr("stroke", "#e4b9b3")           // soft line
+  .attr("stroke-width", 1.2)
+  .attr("stroke-dasharray", "5,4")     // dashed outline
+  .style("opacity", 0.9);
+
+function wombPath(t) {
+  const pts = [];
+  for (let i = 0; i < wombSamples; i++) {
+    const a = (i / wombSamples) * Math.PI * 2;
+
+    const wobble =
+      10 * Math.sin(3 * a + t * 0.7) +
+      6 * Math.sin(5 * a - t * 0.9);
+
+    const rx = wombRadiusX + wobble * 0.4;
+    const ry = wombRadiusY + wobble * 0.6;
+
+    const x = wombCenter.x + rx * Math.cos(a);
+    const y = wombCenter.y + ry * Math.sin(a);
+
+    pts.push([x, y]);
+  }
+
+  const path = d3.line().curve(d3.curveCatmullRom.alpha(0.7))(pts);
+  return `${path}Z`;
+}
+
+// ---------- UTERINE CORE (gentle pulse) ----------
+
+const core = svg.append("circle")
+  .attr("cx", wombCenter.x)
+  .attr("cy", wombCenter.y + 40)
+  .attr("r", 22)
+  .attr("fill", "#fbe8b7")
+  .style("opacity", 0.8);
+
+// ---------- UMBILICAL PATH (invisible track) ----------
+
+// This path guides the particles but is not visible.
+
+const cordPathEl = svg.append("path")
+  .attr("fill", "none")
+  .attr("stroke", "none")  // transparent path
+  .attr("d", (() => {
+    const x0 = wombCenter.x - 60;
+    const y0 = wombCenter.y - 120;
+    const x1 = wombCenter.x - 20;
+    const y1 = wombCenter.y - 40;
+    const x2 = wombCenter.x + 10;
+    const y2 = wombCenter.y + 10;
+    const x3 = wombCenter.x;
+    const y3 = wombCenter.y + 30;
+
+    return `
+      M ${x0},${y0}
+      C ${x0 + 40},${y0 + 40} ${x1 - 20},${y1 - 10} ${x1},${y1}
+      S ${x2 + 40},${y2 + 40} ${x2},${y2}
+      S ${x3 + 10},${y3 + 40} ${x3},${y3}
+    `;
+  })());
+
+// ---------- PARTICLES (nutrients flowing along invisible path) ----------
+
+const nutrientsCount = 40;
+const nutrients = d3.range(nutrientsCount).map(() => ({
+  phaseOffset: Math.random(),
+  speed: 0.04 + Math.random() * 0.03,
+  size: 2.3 + Math.random(),
+  delay: Math.random() * 5
+}));
+
+const nutrientsGroup = svg.append("g");
+
+const nutrientsSel = nutrientsGroup.selectAll("circle.nutrient")
+  .data(nutrients)
+  .enter()
+  .append("circle")
+  .attr("class", "nutrient")
+  .attr("r", d => d.size)
+  .attr("fill", "#fff")
+  .style("opacity", 0);
+
+// ---------- UNIVERSAL MERCY WAVES (subtle) ----------
+
+const waveCount = 4;
+const waves = d3.range(waveCount).map(i => ({
+  baseR: 120 + i * 25,
+  offset: i * 1.7
+}));
+
+const wavesGroup = svg.append("g");
+
+const wavesSel = wavesGroup.selectAll("circle.wave")
+  .data(waves)
+  .enter()
+  .append("circle")
+  .attr("cx", wombCenter.x)
+  .attr("cy", wombCenter.y)
+  .attr("fill", "none")
+  .attr("stroke", "#f3e4da")
+  .attr("stroke-width", 0.9)
+  .style("opacity", 0.03);
+
+// ---------- ANIMATION LOOP ----------
+
+let last = 0;
+let cordLength = null;
+
+d3.timer(elapsed => {
+  const t = elapsed / 1000;
+  const dt = (elapsed - last) / 1000;
+  last = elapsed;
+
+  // animate womb
+  wombPathEl.attr("d", wombPath(t));
+
+  // core gentle breathing
+  const pulse = 1 + 0.12 * Math.sin(t * 1.3);
+  core
+    .attr("r", 22 * pulse)
+    .style("opacity", 0.7 + 0.15 * Math.sin(t * 0.9));
+
+  // radial mercy waves
+  wavesSel
+    .attr("r", d => d.baseR + 12 * Math.sin(t * 0.4 + d.offset));
+
+  // particle movement
+  if (cordLength == null) {
+    cordLength = cordPathEl.node().getTotalLength();
+  }
+
+  nutrientsSel.each(function(d) {
+    const age = t - d.delay;
+    if (age < 0) {
+      d3.select(this).style("opacity", 0);
+      return;
+    }
+
+    const progress = (d.phaseOffset + age * d.speed) % 1;
+    const point = cordPathEl.node().getPointAtLength(progress * cordLength);
+
+    const fadeIn = Math.min(1, age / 1.5);
+    const towardCore = progress;
+    const fadeOut = 1 - Math.max(0, (towardCore - 0.7) / 0.3);
+    const opacity = 0.1 + 0.8 * fadeIn * Math.max(0, fadeOut);
+
+    const sizePulse = 0.9 + 0.4 * Math.sin(t * 2.2 + d.phaseOffset * Math.PI * 2);
+    const r = d.size * sizePulse;
+
+    d3.select(this)
+      .attr("cx", point.x)
+      .attr("cy", point.y)
+      .attr("r", r)
+      .style("opacity", opacity);
+  });
+});
+        </script>
+        
+    </body>
+</html>
