@@ -1,0 +1,33 @@
+
+{
+    "description": "chapter 20 - benediction", 
+    "attributes": [
+        {
+            "trait_type": "Pages", 
+            "value": "15"
+        },
+        {
+            "trait_type": "Poems", 
+            "value": "15"
+        },
+        {
+            "trait_type": "Prose", 
+            "value": "0"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Blessed"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Benediction"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Timeless"
+        }
+    ],
+    "external_url": "https://arweave.net/0eIYZo7cHpazOriAkLmx_IypeiTCApqZMAgWJliZkpg", 
+    "image": "ar://mcujMlNyrn3WwwZGdbTRIP5zUTS5ifB3L5uaY8qeYkk", 
+    "name": "chapter twenty guardian"
+}

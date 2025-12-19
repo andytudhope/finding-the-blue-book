@@ -35,6 +35,25 @@ If you want to know how to work with these contracts and do more fancy things yo
 
 This is intended for Guardians.
 
+### The easy way
+
+The easiest way to do this is to use [etherscan](https://etherscan.io/address/0xeB3fC95B74C79C2c3469188A72df2c2399D752AB#writeContract#F12). This link will take you to the exact `updateTokenURI()` function you need to call to update what appears on your page.
+
+All you need to do now is get your new html document, whatever it is, into Arweave. You'll need your own Arweave wallet with some AR in it - it is likely best to just ask me for assistance there. Then run:
+
+```bash
+npm i -g arweave-deploy
+arweave deploy /path/to/file.html --package --key-file your-new-wallet.json
+```
+
+The second command will return the url you have deployed to, something like `https://arweave.net/0eIYZo7cHpazOriAkLmx_IypeiTCApqZMAgWJliZkpg`.
+
+Change `https://arweave.net/` to `ar://<same_hash>`.
+
+Keep the same hash, then put that string `ar://<same_hash>` into the newTokenURI() field in [the function on etherscan](https://etherscan.io/address/0xeB3fC95B74C79C2c3469188A72df2c2399D752AB#writeContract#F12). You'll also need your tokenID, which is the same as the chapter number for all chapters after Chapter 7. For the first seven chapter, it is one less than the chapter number.
+
+### The whole story
+
 1. Make a new html document containing whatever you want to appear in your chapter. You can look at examples on the [gh-pages branch of this repo](https://github.com/andytudhope/finding-the-blue-book/tree/gh-pages).
 2. You can include whatever you like in that html, so long as it is a single page. Literally, whatever scripts and stylesheets you please.
 3. I use an old tool called [Arweave deploy](https://github.com/ArweaveTeam/arweave-deploy) to deploy this single page, using the `--package` option it came with to ensure my js and css gets bundled up with the html. You might choose to use something more current.
