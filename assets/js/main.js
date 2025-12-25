@@ -19,5 +19,26 @@ $.get(
                 );
             });
         };
+
+        // Automatically detect and load the chapter iframe
+        const chapterNameToNumber = {
+            "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
+            "seven": 7, "eight": 8, "nine": 9, "ten": 10, "eleven": 11,
+            "twelve": 12, "thirteen": 13, "fourteen": 14, "fifteen": 15,
+            "sixteen": 16, "seventeen": 17, "eighteen": 18
+        };
+
+        // Find the iframe with a chapter ID
+        const iframe = $("iframe[id]").first();
+        if (iframe.length > 0) {
+            const iframeId = iframe.attr("id");
+            const chapterNumber = chapterNameToNumber[iframeId];
+            
+            if (chapterNumber) {
+                window.loadChapter(chapterNumber, iframeId);
+            } else {
+                console.warn("Could not find chapter number for iframe ID:", iframeId);
+            }
+        }
     }
 );
