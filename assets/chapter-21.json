@@ -1,0 +1,33 @@
+
+{
+    "description": "chapter 21 - Returning to Reflection", 
+    "attributes": [
+        {
+            "trait_type": "Pages", 
+            "value": "12"
+        },
+        {
+            "trait_type": "Poems", 
+            "value": "12"
+        },
+        {
+            "trait_type": "Prose", 
+            "value": "0"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "As-Samad"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "Al-Karim"
+        },
+        {
+            "trait_type": "Attribute", 
+            "value": "As-Sabr"
+        }
+    ],
+    "external_url": "https://arweave.net/7XwOMrrPKDSIAg_dM8gYvkS82HcZuR8RpgbVeHk5IUg", 
+    "image": "ar://cvbJ0oibnBng5Sx6bE90kGpfkxIQcOkioq_WcHqRWiE", 
+    "name": "chapter twenty one guardian"
+}
