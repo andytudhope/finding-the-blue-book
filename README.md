@@ -1,5 +1,11 @@
 # Chapter loading
 
+Chapter iframes intentionally retain both `allow-scripts` and
+`allow-same-origin`: embedded YouTube players need their normal origin to use
+browser storage. Removing the origin permission breaks those players. Keep
+chapter destinations on a separate origin (such as Arweave); combining these
+permissions is unsafe for content served from the parent site's own origin.
+
 This static site loads chapter iframe URLs from `assets/data/chapters.json`.
 Visitors never call Alchemy or Ethereum RPC. No key, Vercel migration, or build
 step is needed.
