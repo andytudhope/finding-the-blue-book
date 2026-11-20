@@ -1,0 +1,112 @@
+{
+  "contract": "0xeB3fC95B74C79C2c3469188A72df2c2399D752AB",
+  "chainId": 1,
+  "source": "Local contracts/assets/chapter-*.json; not yet verified against the live contract",
+  "chapters": {
+    "one": {
+      "chapter": 1,
+      "tokenId": 0,
+      "url": "https://arweave.net/SYB3B864z83qpER3rfCBy2BZZc5HH4ETXOOxoouL27Q"
+    },
+    "two": {
+      "chapter": 2,
+      "tokenId": 1,
+      "url": "https://arweave.net/Ho7LYpLmCPd1TDDi8h0CFboFZhLCvymIcLLBB1oVE8I"
+    },
+    "three": {
+      "chapter": 3,
+      "tokenId": 2,
+      "url": "https://arweave.net/AoVho7todjuRGn8mVsJwSpwKvsjkXuO57crl6gaxgVQ"
+    },
+    "four": {
+      "chapter": 4,
+      "tokenId": 3,
+      "url": "https://arweave.net/uySq7v097mHKZ6AQeHJy2ZbF7JvA9vS957Jnnu9Pya8"
+    },
+    "five": {
+      "chapter": 5,
+      "tokenId": 4,
+      "url": "https://arweave.net/MPx-7gqLrVEwDiFQ0Nns1HTMI7OUbHER2hr-x_tisI0"
+    },
+    "six": {
+      "chapter": 6,
+      "tokenId": 5,
+      "url": "https://arweave.net/GEQZKI5mZZkb5bWq6G2-6sr_S3mrxkuCOQbwJQS0-rY"
+    },
+    "seven": {
+      "chapter": 7,
+      "tokenId": 6,
+      "url": "https://arweave.net/SmCrb9fxdqqSEzAADE7w6NZYXUb_AymyjiCKHFA-8G4"
+    },
+    "eight": {
+      "chapter": 8,
+      "tokenId": 8,
+      "url": "https://arweave.net/kyqyDL3sx0mYDxXZ6FAocdeWr3mhH-PkcZhM81duWgU"
+    },
+    "nine": {
+      "chapter": 9,
+      "tokenId": 9,
+      "url": "https://arweave.net/qCBfKim0_WnWBdg3nUreeVO6JmuaePW1RutswPg2_nc"
+    },
+    "ten": {
+      "chapter": 10,
+      "tokenId": 10,
+      "url": "https://arweave.net/-QToZNYFZ8UumdYbbVw7MV9f3OK7xDM6TPo1zKGYnHg"
+    },
+    "eleven": {
+      "chapter": 11,
+      "tokenId": 11,
+      "url": "https://arweave.net/482Xj8xtYRJJhkvbMwzoJWIFiiXYH--Enncnc2RfGWo"
+    },
+    "twelve": {
+      "chapter": 12,
+      "tokenId": 12,
+      "url": "https://arweave.net/WqvzD7FXcHo9eFppBXXeMdASuZPspCntRSCNlXxycSA"
+    },
+    "thirteen": {
+      "chapter": 13,
+      "tokenId": 13,
+      "url": "https://arweave.net/TBDzwNgxyFQX3Lu9acei5MROWpKBMyxjRbId-SMjqp8"
+    },
+    "fourteen": {
+      "chapter": 14,
+      "tokenId": 14,
+      "url": "https://arweave.net/Y-ptYOrFGtxamjhC6I3DDUwprhhubbTEf4If5esFrng"
+    },
+    "fifteen": {
+      "chapter": 15,
+      "tokenId": 15,
+      "url": "https://arweave.net/BTKi9gycVdYhil3KCy8NZZEekDUWOSN64WVAIYDSaRo"
+    },
+    "sixteen": {
+      "chapter": 16,
+      "tokenId": 16,
+      "url": "https://arweave.net/SiZ9MWn50o4E-VBeT7ESxgCalk0V5GK2F-wHO1zC6k8"
+    },
+    "seventeen": {
+      "chapter": 17,
+      "tokenId": 17,
+      "url": "https://arweave.net/b8jeBR0r7MFPPrJcxzHeYR4XhLWiF_WW-8N47gKI0jg"
+    },
+    "eighteen": {
+      "chapter": 18,
+      "tokenId": 18,
+      "url": "https://arweave.net/ykBgY4eKX-uKIhAHSIOa6Y7EF0Vrz46c_hBYKTJ9NPc"
+    },
+    "nineteen": {
+      "chapter": 19,
+      "tokenId": 19,
+      "url": "https://arweave.net/F6WXYWnDEmVU-tHuiB8FP2ZzgpuevcvVum8F-WlefnE"
+    },
+    "twenty": {
+      "chapter": 20,
+      "tokenId": 20,
+      "url": "https://arweave.net/0eIYZo7cHpazOriAkLmx_IypeiTCApqZMAgWJliZkpg"
+    },
+    "twenty-one": {
+      "chapter": 21,
+      "tokenId": 21,
+      "url": "https://arweave.net/7XwOMrrPKDSIAg_dM8gYvkS82HcZuR8RpgbVeHk5IUg"
+    }
+  }
+}
